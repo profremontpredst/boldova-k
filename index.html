@@ -292,8 +292,6 @@
         </div>
     </section>
 
-    <!-- Остальные секции остаются без изменений -->
-
     <!-- =============================== Choose Us section start ============================ -->
     <section class="py-120 overflow-hidden">
         <div class="container">
@@ -340,7 +338,246 @@
         </div>
     </section>
 
-    <!-- Контакты и футер -->
+    <!-- === КВИЗ СЕКЦИЯ === -->
+    <section class="py-120" id="zayv">
+        <div class="container">
+            <div class="row gy-5">
+                <div class="col-lg-12">
+                    <div class="bg-neutral-50 tw-py-17 tw-px-705">
+                        <h4 class="tw-mb-4">15 минут бесплатной консультации</h4>
+                        <p class="text-neutral-600 max-w-444-px">
+                            Ответьте на 5 коротких вопросов, чтобы узнать возможность списания долгов.
+                        </p>
+                
+                        <style>
+                            .quiz-wrapper {
+                            background: #fff;
+                            border-radius: 16px;
+                            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+                            padding: 24px;
+                            margin-top: 30px;
+                            max-width: 640px;
+                            }
+                            .quiz__header {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            border-bottom: 1px solid #eee;
+                            padding-bottom: 12px;
+                            margin-bottom: 20px;
+                            }
+                            .quiz__title {
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #3a2a18;
+                            }
+                            .quiz__progress {
+                            font-size: 13px;
+                            color: #777;
+                            }
+                            .bar {
+                            width: 100px;
+                            height: 6px;
+                            background: #eee;
+                            border-radius: 4px;
+                            overflow: hidden;
+                            margin-left: 10px;
+                            }
+                            .bar > span {
+                            display: block;
+                            height: 100%;
+                            background: #6b4b2b;
+                            width: 0%;
+                            transition: width 0.3s;
+                            }
+                            .step { display: none; }
+                            .step.active { display: block; }
+                            .q {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #3a2a18;
+                            margin-bottom: 12px;
+                            }
+                            .options {
+                            display: grid;
+                            gap: 10px;
+                            }
+                            .btn-opt {
+                            background: #f7f3ef;
+                            border: 1px solid #e5dcd4;
+                            border-radius: 12px;
+                            padding: 12px 14px;
+                            font-size: 15px;
+                            cursor: pointer;
+                            transition: 0.25s;
+                            }
+                            .btn-opt:hover { background: #f0e7df; }
+                            .btn-opt.active {
+                            background: #6b4b2b;
+                            color: #fff;
+                            border-color: #6b4b2b;
+                            }
+                            .controls {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-top: 18px;
+                            }
+                            .btn {
+                            border-radius: 10px;
+                            padding: 12px 18px;
+                            border: 1px solid #d9cbbd;
+                            background: #fff;
+                            cursor: pointer;
+                            transition: 0.3s;
+                            font-weight: 600;
+                            font-size: 15px;
+                            }
+                            .btn--primary {
+                            background: #6b4b2b;
+                            color: #fff;
+                            border: none;
+                            }
+                            .btn--primary:hover { background: #8b623d; }
+                            .result {
+                            margin-top: 16px;
+                            background: #f9f6f2;
+                            padding: 14px;
+                            border-radius: 10px;
+                            border: 1px dashed #d6c5b3;
+                            }
+                            @media(max-width:600px){
+                            .quiz-wrapper{padding:18px;}
+                            .btn-opt{font-size:14px;}
+                            }
+                        </style>
+                
+                        <div class="quiz-wrapper" id="quiz">
+                            <div class="quiz__header">
+                            <div class="quiz__title">Проверка на банкротство</div>
+                            <div class="quiz__progress">
+                                <span id="pText">1 / 5</span>
+                                <div class="bar"><span id="pBar"></span></div>
+                            </div>
+                            </div>
+                
+                            <div class="quiz__body">
+                            <div class="step active" data-step="1">
+                                <div class="q">1. Какая у вас сумма долга?</div>
+                                <div class="options">
+                                <button class="btn-opt" data-name="debt" data-value="до 300 тыс.">До 300 тыс.</button>
+                                <button class="btn-opt" data-name="debt" data-value="300–500 тыс.">300–500 тыс.</button>
+                                <button class="btn-opt" data-name="debt" data-value="более 500 тыс.">Более 500 тыс.</button>
+                                </div>
+                            </div>
+                
+                            <div class="step" data-step="2">
+                                <div class="q">2. Есть ли просрочки?</div>
+                                <div class="options">
+                                <button class="btn-opt" data-name="delay" data-value="нет">Нет</button>
+                                <button class="btn-opt" data-name="delay" data-value="менее 3 мес.">Менее 3 мес.</button>
+                                <button class="btn-opt" data-name="delay" data-value="более 3 мес.">Более 3 мес.</button>
+                                </div>
+                            </div>
+                
+                            <div class="step" data-step="3">
+                                <div class="q">3. Работаете официально?</div>
+                                <div class="options">
+                                <button class="btn-opt" data-name="job" data-value="да">Да</button>
+                                <button class="btn-opt" data-name="job" data-value="нет">Нет</button>
+                                </div>
+                            </div>
+                
+                            <div class="step" data-step="4">
+                                <div class="q">4. Есть ли имущество кроме жилья?</div>
+                                <div class="options">
+                                <button class="btn-opt" data-name="property" data-value="нет">Нет</button>
+                                <button class="btn-opt" data-name="property" data-value="есть, хочу сохранить">Есть, хочу сохранить</button>
+                                <button class="btn-opt" data-name="property" data-value="готов продать">Готов продать</button>
+                                </div>
+                            </div>
+                
+                            <div class="step" data-step="5">
+                                <div class="q">5. Введите контакты для связи</div>
+                                <input id="quizName" class="form-control mb-3" placeholder="Ваше имя">
+                                <input id="quizPhone" class="form-control mb-3" placeholder="+7 900 000-00-00">
+                                <div class="result" id="summaryBox" style="display:none;"></div>
+                            </div>
+                
+                            <div class="controls">
+                                <button class="btn" id="prevBtn" disabled>← Назад</button>
+                                <button class="btn btn--primary" id="nextBtn">Далее →</button>
+                            </div>
+                            </div>
+                        </div>
+                
+                        <script src="https://unpkg.com/imask"></script>
+                        <script>
+                            const QUIZ_URL = "https://openai-gpt-proxy-mcnj.onrender.com/quiz";
+                            const LEAD_URL = "https://openai-gpt-proxy-mcnj.onrender.com/lead";
+                            let step = 1;
+                            const total = 5;
+                            const answers = {};
+                            const steps = document.querySelectorAll(".step");
+                            const pText = document.getElementById("pText");
+                            const pBar = document.getElementById("pBar");
+                            const nextBtn = document.getElementById("nextBtn");
+                            const prevBtn = document.getElementById("prevBtn");
+                            const summaryBox = document.getElementById("summaryBox");
+                
+                            function showStep(n) {
+                            steps.forEach(s => s.classList.remove("active"));
+                            steps[n-1].classList.add("active");
+                            pText.textContent = n+" / "+total;
+                            pBar.style.width = ((n-1)/(total-1))*100+"%";
+                            prevBtn.disabled = n===1;
+                            nextBtn.textContent = n<total ? "Далее →" : "Отправить";
+                            }
+                
+                            document.querySelectorAll(".btn-opt").forEach(btn => {
+                            btn.onclick = () => {
+                                btn.parentElement.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
+                                btn.classList.add("active");
+                                answers[btn.dataset.name] = btn.dataset.value;
+                                if(step < 4) setTimeout(()=>showStep(++step), 200);
+                            };
+                            });
+                
+                            prevBtn.onclick = ()=>{ if(step>1) showStep(--step); };
+                
+                            nextBtn.onclick = async ()=>{
+                            if(step < 5) { showStep(++step); return; }
+                            const name = document.getElementById("quizName").value.trim();
+                            let phone = document.getElementById("quizPhone").value.replace(/\D/g, "");
+                            if(!name || phone.length < 10){ alert("Введите корректные данные"); return; }
+                
+                            phone = "+7" + phone.slice(-10);
+                            nextBtn.disabled = true; nextBtn.textContent = "Отправляем…";
+                
+                            try {
+                                await fetch(LEAD_URL,{
+                                method:"POST",
+                                headers:{"Content-Type":"application/json"},
+                                body:JSON.stringify({ name, phone, answers })
+                                });
+                                summaryBox.style.display="block";
+                                summaryBox.textContent="✅ Спасибо! Юрист свяжется с вами в ближайшее время.";
+                                nextBtn.textContent="Готово ✔";
+                            } catch(e){
+                                alert("Ошибка соединения");
+                                nextBtn.textContent="Отправить";
+                            } finally {
+                                nextBtn.disabled=false;
+                            }
+                            };
+                
+                            showStep(1);
+                            IMask(document.getElementById("quizPhone"), { mask: "+{7} (000) 000-00-00" });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="footer bg-black position-relative z-1 mt-auto tw-pt-16 overflow-hidden">
         <div class="pb-120 ">
