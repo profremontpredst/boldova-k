@@ -159,16 +159,16 @@
       <div class="form-box">
         <button class="close-modal" id="closeModal">&times;</button>
         <h2>Получить консультацию</h2>
-        <div class="field"><label>Ваше имя</label><input id="name" placeholder="Иван"></div>
-        <div class="field"><label>Телефон</label><input id="phone" placeholder="+7 (900) 000-00-00"></div>
-        <input type="text" id="honeypot" style="display:none !important;">
+        <div class="field"><label>Ваше имя</label><input id="modalName" placeholder="Иван"></div>
+        <div class="field"><label>Телефон</label><input id="modalPhone" placeholder="+7 (900) 000-00-00"></div>
+        <input type="text" id="modalHoneypot" style="display:none !important;">
         
         <!-- Кнопка для людей -->
-        <button id="sendBtn">Отправить</button>
+        <button id="modalSendBtn">Отправить</button>
         <!-- Невидимая ловушка для ботов -->
-        <button id="fakeBtn" tabindex="-1">Не нажимай</button>
+        <button id="modalFakeBtn" tabindex="-1">Не нажимай</button>
 
-        <div class="muted" id="status"></div>
+        <div class="muted" id="modalStatus"></div>
       </div>
     </div>
 
@@ -749,7 +749,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-<!-- Скрипт для модальной формы -->
 <script src="https://unpkg.com/imask"></script>
 <script>
 // Константы и логика формы (полностью сохранена из оригинальной формы)
@@ -757,7 +756,7 @@ const QUIZ_URL="https://openai-gpt-proxy-mcnj.onrender.com/quiz";
 const LEAD_URL="https://openai-gpt-proxy-mcnj.onrender.com/lead";
 
 // Инициализация маски для телефона
-const phone=document.getElementById("phone");
+const phone=document.getElementById("modalPhone");
 if(phone) {
     IMask(phone,{mask:'+{7} (000) 000-00-00'});
 }
@@ -768,23 +767,23 @@ function pushEvent(type,label){const now=Date.now();events.push({type,label,inte
 // логируем действия
 ["click","input","focus"].forEach(ev=>{
   document.addEventListener(ev,e=>{
-    if(e.target.id==="honeypot")return;
+    if(e.target.id==="modalHoneypot")return;
     pushEvent(ev,e.target.id||e.target.tagName);
   },true);
 });
 
 // клик по фейковой кнопке = бан
-document.getElementById("fakeBtn").addEventListener("click",()=>{
+document.getElementById("modalFakeBtn").addEventListener("click",()=>{
   pushEvent("fake_click","bot_suspect");
 });
 
 // Обработчик отправки формы
-document.getElementById("sendBtn").addEventListener("click",async()=>{
+document.getElementById("modalSendBtn").addEventListener("click",async()=>{
   pushEvent("click","submit");
-  const name=document.getElementById("name").value.trim();
+  const name=document.getElementById("modalName").value.trim();
   const ph=phone.value.replace(/[^0-9+]/g,'');
-  const honeypot=document.getElementById("honeypot").value;
-  const status=document.getElementById("status");
+  const honeypot=document.getElementById("modalHoneypot").value;
+  const status=document.getElementById("modalStatus");
   if(honeypot)return;
   if(!name||ph.length<10){status.textContent="Введите корректные данные";return;}
   status.textContent="Проверяем...";
@@ -818,7 +817,7 @@ const modal = document.getElementById('modalForm');
 const closeBtn = document.getElementById('closeModal');
 
 function openModal(e) {
-    e.preventDefault();
+    if(e) e.preventDefault();
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -829,9 +828,7 @@ function closeModal() {
 }
 
 document.querySelectorAll('.open-modal-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        openModal(e);
-    });
+    btn.addEventListener('click', openModal);
 });
 
 closeBtn.addEventListener('click', closeModal);
@@ -853,4 +850,5 @@ document.addEventListener('keydown', (e) => {
 
 </body>
 </html>
+
 
