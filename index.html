@@ -817,7 +817,8 @@ document.getElementById("sendBtn").addEventListener("click",async()=>{
 const modal = document.getElementById('modalForm');
 const closeBtn = document.getElementById('closeModal');
 
-function openModal() {
+function openModal(e) {
+    e.preventDefault();
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -827,9 +828,10 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Обработчики для кнопок открытия формы
 document.querySelectorAll('.open-modal-btn').forEach(btn => {
-    btn.addEventListener('click', openModal);
+    btn.addEventListener('click', function(e) {
+        openModal(e);
+    });
 });
 
 closeBtn.addEventListener('click', closeModal);
@@ -851,3 +853,4 @@ document.addEventListener('keydown', (e) => {
 
 </body>
 </html>
+
