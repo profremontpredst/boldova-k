@@ -827,10 +827,6 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
-document.querySelectorAll('.open-modal-btn').forEach(btn => {
-    btn.addEventListener('click', openModal);
-});
-
 closeBtn.addEventListener('click', closeModal);
 
 // Закрытие по клику на оверлей
@@ -845,6 +841,11 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('active')) {
         closeModal();
     }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.open-modal-btn').forEach(btn => {
+      btn.addEventListener('click', openModal);
+  });
 });
 </script>
 
