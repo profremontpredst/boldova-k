@@ -33,6 +33,107 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://boldova-k.ru/">
   <meta property="og:locale" content="ru_RU">
+
+  <!-- Стили для модальной формы -->
+  <style>
+    .modal-form-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+    .modal-form-overlay.active {
+      display: flex;
+    }
+    .form-box { 
+      background: #fff !important; 
+      box-shadow: 0 8px 22px rgba(0,0,0,.05) !important; 
+      border-radius: 12px !important;
+      padding: 24px;
+      width: min(400px, 90vw);
+      text-align: left;
+      position: relative;
+    }
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: #0c2f66;
+    }
+    .form-box .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .form-box label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .form-box input {
+      padding: 10px;
+      border: 1px solid #DCE3EB;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      width: 100%;
+    }
+    .form-box input:focus {
+      outline: 1px solid #0066FF;
+      border-color: #BBD0EE;
+    }
+    .form-box button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0066FF;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .form-box button:hover {
+      background: #0053d1;
+    }
+    .form-box .muted {
+      margin-top: 10px;
+      font-size: 12px;
+      text-align: center;
+      color: #7c8a9a;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      width: auto;
+      padding: 5px;
+    }
+    .close-modal:hover {
+      color: #000;
+      background: none;
+    }
+    /* Ловушка для ботов */
+    #fakeBtn {
+      opacity: 0;
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      position: absolute;
+      left: -9999px;
+    }
+  </style>
 </head>
     
     <!-- Разметка JSON-LD, созданная Мастером разметки структурированных данных Google. -->
@@ -52,6 +153,24 @@
     </script>
 
 <body data-aos-easing="ease" data-aos-duration="400" data-aos-delay="0" style="height: 0px; overscroll-behavior: none; scroll-behavior: auto;">
+
+    <!-- Модальная форма -->
+    <div class="modal-form-overlay" id="modalForm">
+      <div class="form-box">
+        <button class="close-modal" id="closeModal">&times;</button>
+        <h2>Получить консультацию</h2>
+        <div class="field"><label>Ваше имя</label><input id="name" placeholder="Иван"></div>
+        <div class="field"><label>Телефон</label><input id="phone" placeholder="+7 (900) 000-00-00"></div>
+        <input type="text" id="honeypot" style="display:none !important;">
+        
+        <!-- Кнопка для людей -->
+        <button id="sendBtn">Отправить</button>
+        <!-- Невидимая ловушка для ботов -->
+        <button id="fakeBtn" tabindex="-1">Не нажимай</button>
+
+        <div class="muted" id="status"></div>
+      </div>
+    </div>
 
     <div class="mobile-menu d-lg-none d-block scroll-sm position-fixed bg-white tw-w-300-px tw-h-screen overflow-y-auto tw-p-6 tw-z-999 tw--translate-x-full tw-pb-68 ">
 
@@ -82,7 +201,7 @@
                 </ul>
 
             </div>
-            <a href="https://boldova-k.ru/#" class="btn btn-main-two hover-style-two button--stroke d-sm-none d-inline-flex align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-8 rounded-pill tw-mt-6" data-block="button">
+            <a href="https://boldova-k.ru/#" class="btn btn-main-two hover-style-two button--stroke d-sm-none d-inline-flex align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-8 rounded-pill tw-mt-6 open-modal-btn" data-block="button">
                 <span class="button__flair" style="translate: none; rotate: none; scale: none;"></span><span class="button__label">Оставить заявку</span>
             </a>
         </div>
@@ -130,7 +249,7 @@
                     </div>
 
                     <div class="d-flex align-items-center tw-gap-6">
-                        <a href="https://boldova-k.ru/#zayv" class="hover--translate-y-1 active--translate-y-scale-9 btn btn-main-two hover-style-two button--stroke d-sm-inline-flex d-none align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-9 rounded-pill tw-py-4 fw-semibold" data-block="button">
+                        <a href="https://boldova-k.ru/#" class="hover--translate-y-1 active--translate-y-scale-9 btn btn-main-two hover-style-two button--stroke d-sm-inline-flex d-none align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-9 rounded-pill tw-py-4 fw-semibold open-modal-btn" data-block="button">
                             <span class="button__flair" style="translate: none; rotate: none; scale: none;"></span>
                             <span class="button__label">Оставить заявку</span>
                         </a>
@@ -155,7 +274,7 @@
                         <p class="text-neutral-500 tw-text-lg max-w-500-px fw-medium tw-mt-8 splitTextStyleOne" style="perspective: 100px;"><div class="split-line" style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; opacity: 0; transform: translate(0%, 140%);"> Мы предлагаем банкротство напрямую с арбитражным </div><div class="split-line" style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; opacity: 0; transform: translate(0%, 140%);">управляющим на лучших условиях.</div></p>
                         <div class="tw-mt-11 d-flex align-items-center tw-gap-42-px flex-wrap">
                             <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="800" class="aos-init aos-animate">
-                                <a href="https://boldova-k.ru/#zayv" class="hover--translate-y-1 active--translate-y-scale-9 btn btn-main hover-style-one button--stroke d-sm-inline-flex align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-56-px tw-py-5 fw-semibold rounded-pill" data-block="button">
+                                <a href="https://boldova-k.ru/#" class="hover--translate-y-1 active--translate-y-scale-9 btn btn-main hover-style-one button--stroke d-sm-inline-flex align-items-center justify-content-center tw-gap-5 group active--translate-y-2 tw-px-56-px tw-py-5 fw-semibold rounded-pill open-modal-btn" data-block="button">
                                     <span class="button__flair" style="translate: none; rotate: none; scale: none;"></span>
                                     <span class="button__label">Оставить заявку</span>
                                 </a>
@@ -629,6 +748,106 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- Скрипт для модальной формы -->
+<script src="https://unpkg.com/imask"></script>
+<script>
+// Константы и логика формы (полностью сохранена из оригинальной формы)
+const QUIZ_URL="https://openai-gpt-proxy-mcnj.onrender.com/quiz";
+const LEAD_URL="https://openai-gpt-proxy-mcnj.onrender.com/lead";
+
+// Инициализация маски для телефона
+const phone=document.getElementById("phone");
+if(phone) {
+    IMask(phone,{mask:'+{7} (000) 000-00-00'});
+}
+
+let events=[],last=Date.now();
+function pushEvent(type,label){const now=Date.now();events.push({type,label,intervalMs:now-last,timestamp:now});last=now;}
+
+// логируем действия
+["click","input","focus"].forEach(ev=>{
+  document.addEventListener(ev,e=>{
+    if(e.target.id==="honeypot")return;
+    pushEvent(ev,e.target.id||e.target.tagName);
+  },true);
+});
+
+// клик по фейковой кнопке = бан
+document.getElementById("fakeBtn").addEventListener("click",()=>{
+  pushEvent("fake_click","bot_suspect");
+});
+
+// Обработчик отправки формы
+document.getElementById("sendBtn").addEventListener("click",async()=>{
+  pushEvent("click","submit");
+  const name=document.getElementById("name").value.trim();
+  const ph=phone.value.replace(/[^0-9+]/g,'');
+  const honeypot=document.getElementById("honeypot").value;
+  const status=document.getElementById("status");
+  if(honeypot)return;
+  if(!name||ph.length<10){status.textContent="Введите корректные данные";return;}
+  status.textContent="Проверяем...";
+  const userId=localStorage.getItem("userId")||("user_"+Math.random().toString(36).slice(2,10));
+  localStorage.setItem("userId",userId);
+  const duration=Date.now()-(events[0]?.timestamp||Date.now());
+  const payload={userId,answers:{name,phone:ph},events,phone:ph,honeypot,durationMs:duration};
+
+  try{
+    const check=await fetch(QUIZ_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    const res=await check.json();
+
+    if(res.action==="deny"){status.textContent="⛔️ Похоже, это бот";return;}
+    status.textContent="Отправляем…";
+
+    await fetch(LEAD_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        name,phone:ph,userId,source:"form",no_summary:true,
+        answersSummary:`Форма: ${name}, ${ph}`,messages:[]
+      })
+    });
+    status.textContent="Готово ✔";
+    setTimeout(() => {
+        closeModal();
+    }, 2000);
+  }catch(e){status.textContent="Ошибка соединения";}
+});
+
+// Управление модальным окном
+const modal = document.getElementById('modalForm');
+const closeBtn = document.getElementById('closeModal');
+
+function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Обработчики для кнопок открытия формы
+document.querySelectorAll('.open-modal-btn').forEach(btn => {
+    btn.addEventListener('click', openModal);
+});
+
+closeBtn.addEventListener('click', closeModal);
+
+// Закрытие по клику на оверлей
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+
+// Закрытие по ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+    }
+});
+</script>
 
 </body>
 </html>
