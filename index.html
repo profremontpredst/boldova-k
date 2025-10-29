@@ -829,107 +829,74 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-
 <script src="https://unpkg.com/imask"></script>
+
 <script>
-// Константы и логика формы (полностью сохранена из оригинальной формы)
-const QUIZ_URL="https://openai-gpt-proxy-mcnj.onrender.com/quiz";
-const LEAD_URL="https://openai-gpt-proxy-mcnj.onrender.com/lead";
-
-// Инициализация маски для телефона
-const phone=document.getElementById("modalPhone");
-if(phone) {
-    IMask(phone,{mask:'+{7} (000) 000-00-00'});
-}
-
-let events=[],last=Date.now();
-function pushEvent(type,label){const now=Date.now();events.push({type,label,intervalMs:now-last,timestamp:now});last=now;}
-
-// логируем действия
-["click","input","focus"].forEach(ev=>{
-  document.addEventListener(ev,e=>{
-    if(e.target.id==="modalHoneypot")return;
-    pushEvent(ev,e.target.id||e.target.tagName);
-  },true);
-});
-
-// клик по фейковой кнопке = бан
-document.getElementById("modalFakeBtn").addEventListener("click",()=>{
-  pushEvent("fake_click","bot_suspect");
-});
-
-// Обработчик отправки формы
-document.getElementById("modalSendBtn").addEventListener("click",async()=>{
-  pushEvent("click","submit");
-  const name=document.getElementById("modalName").value.trim();
-  const ph=phone.value.replace(/[^0-9+]/g,'');
-  const honeypot=document.getElementById("modalHoneypot").value;
-  const status=document.getElementById("modalStatus");
-  if(honeypot)return;
-  if(!name||ph.length<10){status.textContent="Введите корректные данные";return;}
-  status.textContent="Проверяем...";
-  const userId=localStorage.getItem("userId")||("user_"+Math.random().toString(36).slice(2,10));
-  localStorage.setItem("userId",userId);
-  const duration=Date.now()-(events[0]?.timestamp||Date.now());
-  const payload={userId,answers:{name,phone:ph},events,phone:ph,honeypot,durationMs:duration};
-
-  try{
-    const check=await fetch(QUIZ_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-    const res=await check.json();
-
-    if(res.action==="deny"){status.textContent="⛔️ Похоже, это бот";return;}
-    status.textContent="Отправляем…";
-
-    await fetch(LEAD_URL,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        name,phone:ph,userId,source:"form",no_summary:true,
-        answersSummary:`Форма: ${name}, ${ph}`,messages:[]
-      })
+    document.addEventListener("DOMContentLoaded", () => {
+      const QUIZ_URL = "https://openai-gpt-proxy-mcnj.onrender.com/quiz";
+      const LEAD_URL = "https://openai-gpt-proxy-mcnj.onrender.com/lead";
+    
+      const phone = document.getElementById("modalPhone");
+      if (phone) IMask(phone, { mask: "+{7} (000) 000-00-00" });
+    
+      let events = [], last = Date.now();
+      function pushEvent(type,label){const now=Date.now();events.push({type,label,intervalMs:now-last,timestamp:now});last=now;}
+      ["click","input","focus"].forEach(ev=>{
+        document.addEventListener(ev,e=>{
+          if(e.target.id==="modalHoneypot")return;
+          pushEvent(ev,e.target.id||e.target.tagName);
+        },true);
+      });
+    
+      const modal = document.getElementById('modalForm');
+      const closeBtn = document.getElementById('closeModal');
+      function openModal(e){ if(e) e.preventDefault(); modal.classList.add('active'); document.body.style.overflow='hidden'; }
+      function closeModal(){ modal.classList.remove('active'); document.body.style.overflow='auto'; }
+    
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+      }
+    
+      document.addEventListener('click', e => {
+        const btn = e.target.closest('.open-modal-btn');
+        if (!btn) return;
+        e.preventDefault();
+        openModal(e);
+      }, true);
+    
+      document.getElementById("modalSendBtn").addEventListener("click",async()=>{
+        pushEvent("click","submit");
+        const name=document.getElementById("modalName").value.trim();
+        const ph=phone.value.replace(/[^0-9+]/g,'');
+        const honeypot=document.getElementById("modalHoneypot").value;
+        const status=document.getElementById("modalStatus");
+        if(honeypot)return;
+        if(!name||ph.length<10){status.textContent="Введите корректные данные";return;}
+        status.textContent="Проверяем...";
+        const userId=localStorage.getItem("userId")||("user_"+Math.random().toString(36).slice(2,10));
+        localStorage.setItem("userId",userId);
+        const duration=Date.now()-(events[0]?.timestamp||Date.now());
+        const payload={userId,answers:{name,phone:ph},events,phone:ph,honeypot,durationMs:duration};
+    
+        try{
+          const check=await fetch(QUIZ_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+          const res=await check.json();
+          if(res.action==="deny"){status.textContent="⛔️ Похоже, это бот";return;}
+          status.textContent="Отправляем…";
+          await fetch(LEAD_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              name,phone:ph,userId,source:"form",no_summary:true,
+              answersSummary:`Форма: ${name}, ${ph}`,messages:[]
+            })
+          });
+          status.textContent="Готово ✔";
+          setTimeout(closeModal, 2000);
+        }catch(e){status.textContent="Ошибка соединения";}
+      });
     });
-    status.textContent="Готово ✔";
-    setTimeout(() => {
-        closeModal();
-    }, 2000);
-  }catch(e){status.textContent="Ошибка соединения";}
-});
-
-// Управление модальным окном
-const modal = document.getElementById('modalForm');
-const closeBtn = document.getElementById('closeModal');
-
-function openModal(e) {
-    if(e) e.preventDefault();
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-closeBtn.addEventListener('click', closeModal);
-
-// Закрытие по клику на оверлей
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        closeModal();
-    }
-});
-
-// Закрытие по ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-        closeModal();
-    }
-});
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.open-modal-btn').forEach(btn => {
-      btn.addEventListener('click', openModal);
-  });
-});
-</script>
+    </script>    
 
 </body>
 </html>
-
