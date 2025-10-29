@@ -630,68 +630,149 @@
                         </div>
                 
                         <script src="https://unpkg.com/imask"></script>
-                        <script>
-                            const QUIZ_URL = "https://openai-gpt-proxy-mcnj.onrender.com/quiz";
-                            const LEAD_URL = "https://openai-gpt-proxy-mcnj.onrender.com/lead";
-                            let step = 1;
-                            const total = 5;
-                            const answers = {};
-                            const steps = document.querySelectorAll(".step");
-                            const pText = document.getElementById("pText");
-                            const pBar = document.getElementById("pBar");
-                            const nextBtn = document.getElementById("nextBtn");
-                            const prevBtn = document.getElementById("prevBtn");
-                            const summaryBox = document.getElementById("summaryBox");
-                
-                            function showStep(n) {
-                            steps.forEach(s => s.classList.remove("active"));
-                            steps[n-1].classList.add("active");
-                            pText.textContent = n+" / "+total;
-                            pBar.style.width = ((n-1)/(total-1))*100+"%";
-                            prevBtn.disabled = n===1;
-                            nextBtn.textContent = n<total ? "Далее →" : "Отправить";
-                            }
-                
-                            document.querySelectorAll(".btn-opt").forEach(btn => {
-                            btn.onclick = () => {
-                                btn.parentElement.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
-                                btn.classList.add("active");
-                                answers[btn.dataset.name] = btn.dataset.value;
-                                if(step < 4) setTimeout(()=>showStep(++step), 200);
-                            };
-                            });
-                
-                            prevBtn.onclick = ()=>{ if(step>1) showStep(--step); };
-                
-                            nextBtn.onclick = async ()=>{
-                            if(step < 5) { showStep(++step); return; }
-                            const name = document.getElementById("quizName").value.trim();
-                            let phone = document.getElementById("quizPhone").value.replace(/\D/g, "");
-                            if(!name || phone.length < 10){ alert("Введите корректные данные"); return; }
-                
-                            phone = "+7" + phone.slice(-10);
-                            nextBtn.disabled = true; nextBtn.textContent = "Отправляем…";
-                
-                            try {
-                                await fetch(LEAD_URL,{
-                                method:"POST",
-                                headers:{"Content-Type":"application/json"},
-                                body:JSON.stringify({ name, phone, answers })
-                                });
-                                summaryBox.style.display="block";
-                                summaryBox.textContent="✅ Спасибо! Юрист свяжется с вами в ближайшее время.";
-                                nextBtn.textContent="Готово ✔";
-                            } catch(e){
-                                alert("Ошибка соединения");
-                                nextBtn.textContent="Отправить";
-                            } finally {
-                                nextBtn.disabled=false;
-                            }
-                            };
-                
-                            showStep(1);
-                            IMask(document.getElementById("quizPhone"), { mask: "+{7} (000) 000-00-00" });
-                        </script>
+<script>
+    const QUIZ_URL = "https://openai-gpt-proxy-mcnj.onrender.com/quiz";
+    const LEAD_URL = "https://openai-gpt-proxy-mcnj.onrender.com/lead";
+    
+    let step = 1;
+    const total = 5;
+    const answers = {};
+    let events = [];
+    let lastTimestamp = Date.now();
+    
+    const steps = document.querySelectorAll(".step");
+    const pText = document.getElementById("pText");
+    const pBar = document.getElementById("pBar");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const summaryBox = document.getElementById("summaryBox");
+
+    function pushEvent(type, label) {
+        const now = Date.now();
+        events.push({
+            type: type,
+            label: label,
+            intervalMs: now - lastTimestamp,
+            timestamp: now
+        });
+        lastTimestamp = now;
+    }
+
+    function showStep(n) {
+        steps.forEach(s => s.classList.remove("active"));
+        steps[n-1].classList.add("active");
+        pText.textContent = n + " / " + total;
+        pBar.style.width = ((n-1)/(total-1))*100 + "%";
+        prevBtn.disabled = n === 1;
+        nextBtn.textContent = n < total ? "Далее →" : "Отправить";
+        step = n;
+    }
+
+    document.querySelectorAll(".btn-opt").forEach(btn => {
+        btn.addEventListener("click", () => {
+            pushEvent("click", btn.dataset.name + ":" + btn.dataset.value);
+            
+            btn.parentElement.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            answers[btn.dataset.name] = btn.dataset.value;
+            
+            if(step < 4) {
+                setTimeout(() => showStep(++step), 200);
+            }
+        });
+    });
+
+    prevBtn.addEventListener("click", () => {
+        if(step > 1) showStep(--step);
+    });
+
+    document.getElementById("quizName").addEventListener("input", () => {
+        pushEvent("input", "quizName");
+    });
+
+    document.getElementById("quizPhone").addEventListener("input", () => {
+        pushEvent("input", "quizPhone");
+    });
+
+    nextBtn.addEventListener("click", async () => {
+        if(step < 5) { 
+            showStep(++step); 
+            return; 
+        }
+
+        const name = document.getElementById("quizName").value.trim();
+        let phone = document.getElementById("quizPhone").value.replace(/\D/g, "");
+        
+        if(!name || phone.length < 10) { 
+            alert("Введите корректные данные"); 
+            return; 
+        }
+
+        phone = "+7" + phone.slice(-10);
+        nextBtn.disabled = true; 
+        nextBtn.textContent = "Отправляем…";
+
+        const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2,10));
+        localStorage.setItem("userId", userId);
+
+        try {
+            const quizPayload = {
+                userId: userId,
+                answers: answers, 
+                events: events,
+                phone: phone,
+                honeypot: "",
+                durationMs: Date.now() - (events[0]?.timestamp || Date.now())
+            };
+
+            const botCheck = await fetch(QUIZ_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(quizPayload)
+            });
+            
+            const botResult = await botCheck.json();
+            
+            if(botResult.action === "deny") {
+                summaryBox.style.display = "block";
+                summaryBox.textContent = "⛔️ Заявка не принята";
+                nextBtn.textContent = "Отправить";
+                nextBtn.disabled = false;
+                return;
+            }
+
+            const answersSummary = Object.entries(answers).map(([q,a]) => `${q}: ${a}`).join("; ");
+            
+            await fetch(LEAD_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ 
+                    name: name, 
+                    phone: phone, 
+                    userId: userId, 
+                    source: "quiz", 
+                    no_summary: true, 
+                    answersSummary: answersSummary,
+                    messages: []
+                })
+            });
+            
+            summaryBox.style.display = "block";
+            summaryBox.textContent = "✅ Спасибо! Юрист свяжется с вами в ближайшее время.";
+            nextBtn.textContent = "Готово ✔";
+            
+        } catch(e) {
+            alert("Ошибка соединения");
+            summaryBox.style.display = "block";
+            summaryBox.textContent = "❌ Ошибка соединения, попробуйте еще раз";
+            nextBtn.textContent = "Отправить";
+            nextBtn.disabled = false;
+        }
+    });
+
+    showStep(1);
+    IMask(document.getElementById("quizPhone"), { mask: "+{7} (000) 000-00-00" });
+</script>
                     </div>
                 </div>
             </div>
@@ -851,3 +932,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
