@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Болдова Ксения - Арбитражный управляющий</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* СБРОС СТИЛЕЙ */
         * {
@@ -42,6 +43,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: all 0.3s ease;
         }
 
         .nav {
@@ -68,10 +70,26 @@
             color: #333;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
         }
 
         .nav-menu a:hover {
             color: #e74c3c;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #e74c3c;
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
         }
 
         .btn {
@@ -82,11 +100,16 @@
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
         }
 
         .btn:hover {
             background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
 
         /* ГЛАВНЫЙ БАННЕР */
@@ -95,6 +118,20 @@
             color: white;
             padding: 150px 0 100px;
             margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,160C960,139,1056,117,1152,117.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
         }
 
         .hero-content {
@@ -102,6 +139,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 50px;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
@@ -134,12 +173,30 @@
 
         .hero-image {
             text-align: center;
+            position: relative;
         }
 
         .hero-image img {
             max-width: 100%;
             border-radius: 10px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -10px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .experience-badge h2 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
         }
 
         /* СЕКЦИЯ ОБО МНЕ */
@@ -153,6 +210,19 @@
             font-size: 2.5rem;
             margin-bottom: 50px;
             color: #2c3e50;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #e74c3c;
+            border-radius: 2px;
         }
 
         .about-content {
@@ -174,6 +244,11 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-card .number {
@@ -195,11 +270,94 @@
 
         .feature {
             margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .feature h4 {
             font-size: 1.3rem;
             margin-bottom: 10px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature h4 i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+
+        /* СЕКЦИЯ ПРОФЕССИОНАЛЬНАЯ ДЕЯТЕЛЬНОСТЬ */
+        .professional {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .professional-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .professional-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .association-logo {
+            max-width: 200px;
+            margin: 30px auto;
+            display: block;
+        }
+
+        /* СЕКЦИЯ ЭТАПЫ */
+        .etap {
+            padding: 100px 0;
+            background: #f8f9fa;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .step {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step h3 {
+            margin: 20px 0 15px;
             color: #2c3e50;
         }
 
@@ -214,6 +372,11 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .faq-question {
@@ -224,6 +387,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #e9ecef;
         }
 
         .faq-answer {
@@ -231,26 +399,67 @@
             display: none;
         }
 
+        .faq-active .faq-answer {
+            display: block;
+        }
+
+        .faq-active .faq-question {
+            background: #e74c3c;
+            color: white;
+        }
+
         /* КОНТАКТЫ */
         .contacts {
             padding: 100px 0;
             background: #2c3e50;
             color: white;
+            position: relative;
+        }
+
+        .contacts::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%231a252f" fill-opacity="0.2" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,160C960,139,1056,117,1152,117.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
         }
 
         .contact-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-item {
             text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .contact-item h3 {
             margin-bottom: 15px;
             font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-item h3 i {
+            margin-right: 10px;
         }
 
         /* ФУТЕР */
@@ -273,6 +482,7 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
@@ -281,6 +491,19 @@
             border-radius: 10px;
             max-width: 500px;
             width: 90%;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal h2 {
@@ -304,6 +527,12 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #e74c3c;
+            outline: none;
         }
 
         .close-modal {
@@ -314,9 +543,39 @@
             cursor: pointer;
             background: none;
             border: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #e74c3c;
+        }
+
+        /* БУРГЕР-МЕНЮ */
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 5px;
+            transition: all 0.3s ease;
         }
 
         /* АДАПТИВ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                gap: 30px;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-content,
             .about-content {
@@ -328,7 +587,40 @@
             }
 
             .nav-menu {
-                display: none;
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                width: 70%;
+                transform: translateX(100%);
+                transition: transform 0.5s ease;
+                justify-content: center;
+                align-items: center;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                z-index: 1001;
+            }
+
+            .nav-active {
+                transform: translateX(0);
+            }
+
+            .burger {
+                display: block;
+                z-index: 1002;
+            }
+
+            .toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .toggle .line2 {
+                opacity: 0;
+            }
+
+            .toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
             }
 
             .stats {
@@ -338,6 +630,35 @@
 
             .about-stats {
                 grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-badge {
+                position: relative;
+                bottom: 0;
+                right: 0;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .contact-item {
+                padding: 20px;
             }
         }
     </style>
@@ -355,11 +676,17 @@
                 <div class="logo">БОЛДОВА КСЕНИЯ</div>
                 <ul class="nav-menu">
                     <li><a href="#about">Обо мне</a></li>
+                    <li><a href="#professional">Профессиональная деятельность</a></li>
                     <li><a href="#etap">Этапы</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#contacts">Контакты</a></li>
                 </ul>
                 <a href="#" class="btn open-modal">Оставить заявку</a>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
             </nav>
         </div>
     </header>
@@ -400,11 +727,11 @@
             <div class="about-content">
                 <div class="about-stats">
                     <div class="stat-card">
-                        <span class="number">99%</span>
+                        <span class="number">100%</span>
                         Успешно реализованных дел
                     </div>
                     <div class="stat-card">
-                        <span class="number">99.8%</span>
+                        <span class="number">100%</span>
                         Удовлетворенность клиентов
                     </div>
                     <div class="stat-card">
@@ -419,13 +746,57 @@
                 <div class="about-text">
                     <h3>Опытный арбитражный юрист</h3>
                     <div class="feature">
-                        <h4>Опыт работы более 15 лет</h4>
+                        <h4><i class="fas fa-briefcase"></i> Опыт работы более 15 лет</h4>
                         <p>Более 15 лет специализируюсь на помощи людям в сложных финансовых ситуациях</p>
                     </div>
                     <div class="feature">
-                        <h4>Индивидуальный подход</h4>
+                        <h4><i class="fas fa-user-tie"></i> Индивидуальный подход</h4>
                         <p>Подхожу к решению проблемы индивидуально, с полным пониманием всех аспектов законодательства о банкротстве.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ ПРОФЕССИОНАЛЬНАЯ ДЕЯТЕЛЬНОСТЬ -->
+    <section class="professional" id="professional">
+        <div class="container">
+            <h2 class="section-title">Профессиональная деятельность</h2>
+            <div class="professional-content">
+                <p>С 2021 года являюсь сертифицированным членом Ассоциации СОАУ «Союз межрегиональный центр арбитражных управляющих» (СОЮЗ МЦАУ) на основании решения Совета Ассоциации.</p>
+                <p>Моя профессиональная деятельность направлена на помощь гражданам и организациям в процедурах банкротства, обеспечивая законность, прозрачность и эффективность процесса.</p>
+                <div class="feature">
+                    <h4><i class="fas fa-award"></i> Профессиональная сертификация</h4>
+                    <p>Регулярно прохожу повышение квалификации и участвую в профессиональных мероприятиях для поддержания высокого уровня экспертизы.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ ЭТАПЫ -->
+    <section class="etap" id="etap">
+        <div class="container">
+            <h2 class="section-title">Этапы работы</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Консультация</h3>
+                    <p>Бесплатная первичная консультация, анализ вашей ситуации</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Подготовка</h3>
+                    <p>Сбор необходимых документов и подготовка заявления</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Подача заявления</h3>
+                    <p>Подача заявления о банкротстве в арбитражный суд</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Сопровождение</h3>
+                    <p>Полное сопровождение процедуры банкротства до завершения</p>
                 </div>
             </div>
         </div>
@@ -453,6 +824,15 @@
                     <p>Все юридические вопросы мы берем на себя. Вы получите полное сопровождение на всех этапах.</p>
                 </div>
             </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Какие гарантии вы предоставляете?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы гарантируем 100% успешное завершение процедуры банкротства при соблюдении всех наших рекомендаций и предоставлении достоверной информации.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -462,15 +842,15 @@
             <h2 class="section-title" style="color: white;">Контакты</h2>
             <div class="contact-info">
                 <div class="contact-item">
-                    <h3>Адрес</h3>
+                    <h3><i class="fas fa-map-marker-alt"></i> Адрес</h3>
                     <p>Челябинск, ул. Академика Макеева 36, оф. 7</p>
                 </div>
                 <div class="contact-item">
-                    <h3>Телефон</h3>
+                    <h3><i class="fas fa-phone"></i> Телефон</h3>
                     <p>+7 908 044-85-28</p>
                 </div>
                 <div class="contact-item">
-                    <h3>Email</h3>
+                    <h3><i class="fas fa-envelope"></i> Email</h3>
                     <p>Ksy-kotenok74@mail.ru</p>
                 </div>
             </div>
@@ -513,17 +893,20 @@
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             });
         });
 
         closeModalButton.addEventListener('click', () => {
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
 
         // Закрытие модалки при клике вне её
         window.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
 
@@ -532,16 +915,18 @@
         
         faqQuestions.forEach(question => {
             question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const isOpen = answer.style.display === 'block';
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('faq-active');
                 
-                // Закрываем все ответы
-                document.querySelectorAll('.faq-answer').forEach(ans => {
-                    ans.style.display = 'none';
+                // Закрываем все FAQ
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('faq-active');
                 });
                 
-                // Открываем/закрываем текущий
-                answer.style.display = isOpen ? 'none' : 'block';
+                // Открываем текущий, если он был закрыт
+                if (!isActive) {
+                    faqItem.classList.add('faq-active');
+                }
             });
         });
 
@@ -555,6 +940,13 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    
+                    // Закрываем меню на мобилке после клика
+                    if (navMenu.classList.contains('nav-active')) {
+                        navMenu.classList.remove('nav-active');
+                        burger.classList.remove('toggle');
+                        document.body.style.overflow = 'auto';
+                    }
                 }
             });
         });
@@ -569,6 +961,54 @@
                 header.style.background = 'white';
                 header.style.backdropFilter = 'none';
             }
+        });
+
+        // БУРГЕР-МЕНЮ
+        const burger = document.querySelector('.burger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        burger.addEventListener('click', () => {
+            navMenu.classList.toggle('nav-active');
+            burger.classList.toggle('toggle');
+            
+            // Блокируем прокрутку тела при открытом меню
+            if (navMenu.classList.contains('nav-active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ОБРАБОТКА ФОРМЫ
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            this.reset();
+        });
+
+        // АНИМАЦИЯ ПРИ ПРОКРУТКЕ
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Наблюдаем за элементами для анимации
+        document.querySelectorAll('.stat-card, .step, .feature, .contact-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
         });
     </script>
 </body>
