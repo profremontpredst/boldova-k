@@ -1535,125 +1535,142 @@
 
         // СКРИПТ КВИЗА - НЕ ТРОГАТЬ!
         // КОНФИГ ДЛЯ BOLDOVA-K
-        const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
-        const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
-        let step = 1, total = 5, answers = {}, events = [], last = Date.now(), submitting = false;
-        const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
-        const steps = $$(".step"), pBar = $("#pBar"), autoHint = $("#autoHint"), thanks = $("#thanksBox"), quizBody = $("#quizBody");
+        // ЗАМЕНИТЬ ЭТОТ СКРИПТ КВИЗА В САЙТЕ БОЛДОВОЙ КСЕНИИ:
 
-        function showStep(n) {
-            steps.forEach(s => s.style.display = "none");
-            steps[n-1].style.display = "block";
-            pBar.style.width = ((n-1)/(total-1))*100 + "%";
-            step = n;
-        }
+const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
+const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
+let step = 1, total = 5, answers = {}, events = [], last = Date.now(), submitting = false;
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const steps = $$(".step"), pBar = $("#pBar"), autoHint = $("#autoHint"), thanks = $("#thanksBox"), quizBody = $("#quizBody");
 
-        function pushEvent(type, label) {
-            const now = Date.now();
-            events.push({ type, label, intervalMs: now - last, timestamp: now });
-            last = now;
-        }
+function showStep(n) {
+    steps.forEach(s => s.style.display = "none");
+    steps[n-1].style.display = "block";
+    pBar.style.width = ((n-1)/(total-1))*100 + "%";
+    step = n;
+}
 
-        // Обработчики кнопок
-        $$(".btn-opt").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const name = btn.dataset.name, val = btn.dataset.value;
-                btn.parentElement.querySelectorAll(".btn-opt").forEach(b => {
-                    b.style.borderColor = "#DCE3EB";
-                    b.style.background = "transparent";
-                    b.style.color = "#0c2f66";
-                });
-                btn.style.borderColor = "#0066FF";
-                btn.style.color = "#0066FF";
-                btn.style.background = "#EFF5FF";
-                answers[name] = val;
-                pushEvent("click", name + ":" + val);
-                if (step < total) {
-                    showStep(++step);
-                }
-            });
+function pushEvent(type, label) {
+    const now = Date.now();
+    events.push({ type, label, intervalMs: now - last, timestamp: now });
+    last = now;
+}
+
+// Обработчики кнопок
+$$(".btn-opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const name = btn.dataset.name, val = btn.dataset.value;
+        btn.parentElement.querySelectorAll(".btn-opt").forEach(b => {
+            b.style.borderColor = "#DCE3EB";
+            b.style.background = "transparent";
+            b.style.color = "#0c2f66";
         });
-
-        // Маска телефона
-        const phone = document.getElementById("quizPhone");
-        const mask = IMask(phone, { mask: '+{7} (000) 000-00-00' });
-        const nameI = document.getElementById("quizName");
-        const honeypot = document.getElementById("quizHoneypot");
-
-        nameI.addEventListener('input', tryAutoSubmit);
-        phone.addEventListener('input', tryAutoSubmit);
-
-        async function tryAutoSubmit() {
-            if (step !== 5 || submitting) return;
-            
-            const name = nameI.value.trim();
-            let ph = phone.value.replace(/[^0-9+]/g, '');
-            
-            // Проверяем полный номер (+7 и 10 цифр)
-            const fullPhone = ph.startsWith('+7') && ph.length === 12;
-            if (honeypot.value || !name || !fullPhone) return;
-            
-            submitting = true;
-            autoHint.style.display = "block";
-            
-            const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
-            localStorage.setItem("userId", userId);
-            
-            const payload = {
-                userId,
-                answers,
-                events,
-                phone: ph,
-                honeypot: honeypot.value,
-                durationMs: Date.now() - (events[0]?.timestamp || Date.now()),
-                frontend: "https://boldova-k.ru"
-            };
-            
-            try {
-                const r = await fetch(QUIZ_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                });
-                const d = await r.json();
-                
-                const verdict = d.action === "allow" ? "✅ Подходит, юрист свяжется" : 
-                               d.action === "challenge" ? "⚠️ Нужна проверка" : "⛔️ Похоже, это бот";
-                
-                const summary = $("#summaryBox");
-                summary.style.display = "block";
-                summary.textContent = verdict;
-                
-                if (d.action !== "deny") {
-                    const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
-                    await fetch(LEAD_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            name,
-                            phone: ph,
-                            userId,
-                            source: "quiz",
-                            no_summary: true,
-                            answersSummary,
-                            messages: []
-                        })
-                    });
-                }
-                
-                autoHint.textContent = "Готово ✔";
-                setTimeout(() => {
-                    $$(".step").forEach(s => s.style.display = "none");
-                    thanks.style.display = "block";
-                }, 800);
-                
-            } catch (e) {
-                autoHint.textContent = "Ошибка соединения";
-            }
+        btn.style.borderColor = "#0066FF";
+        btn.style.color = "#0066FF";
+        btn.style.background = "#EFF5FF";
+        answers[name] = val;
+        pushEvent("click", name + ":" + val);
+        if (step < total) {
+            showStep(++step);
         }
+    });
+});
 
-        // Инициализация квиза
-        showStep(1);
+// Маска телефона
+const phone = document.getElementById("quizPhone");
+const mask = IMask(phone, { mask: '+{7} (000) 000-00-00' });
+const nameI = document.getElementById("quizName");
+const honeypot = document.getElementById("quizHoneypot");
+
+nameI.addEventListener('input', tryAutoSubmit);
+phone.addEventListener('input', tryAutoSubmit);
+
+async function tryAutoSubmit() {
+    if (step !== 5 || submitting) return;
+    
+    const name = nameI.value.trim();
+    let ph = phone.value.replace(/[^0-9+]/g, '');
+    
+    // Проверяем полный номер (+7 и 10 цифр)
+    const fullPhone = ph.startsWith('+7') && ph.length === 12;
+    if (honeypot.value || !name || !fullPhone) return;
+    
+    submitting = true;
+    
+    // СРАЗУ ПОКАЗЫВАЕМ ЭКРАН "ПОЛУЧИЛА ЗАЯВКУ"
+    quizBody.innerHTML = `
+        <div class="receiving-box" style="text-align: center; padding: 40px 20px;">
+            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover; animation: pulse 2s infinite;">
+            <p style="font-size: 17px; color: #0c2f66; font-weight: 600; margin-bottom: 8px;">Получила вашу заявку</p>
+            <p style="font-size: 14px; color: #7c8a9a;">Скоро свяжусь с вами</p>
+        </div>
+    `;
+
+    const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
+    localStorage.setItem("userId", userId);
+    
+    const payload = {
+        userId,
+        answers,
+        events,
+        phone: ph,
+        honeypot: honeypot.value,
+        durationMs: Date.now() - (events[0]?.timestamp || Date.now()),
+        frontend: "https://boldova-k.ru"
+    };
+    
+    try {
+        const r = await fetch(QUIZ_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const d = await r.json();
+        
+        // Если не бот - отправляем лид
+        if (d.action !== "deny") {
+            const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
+            await fetch(LEAD_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name,
+                    phone: ph,
+                    userId,
+                    source: "quiz",
+                    no_summary: true,
+                    answersSummary,
+                    messages: []
+                })
+            });
+        }
+        
+        // Через 2 секунды показываем финальное "Скоро свяжусь"
+        setTimeout(() => {
+            quizBody.innerHTML = `
+                <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
+                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
+                    <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
+                </div>
+            `;
+        }, 2000);
+        
+    } catch (e) {
+        // В случае ошибки всё равно показываем спасибо
+        console.error("Submission error:", e);
+        setTimeout(() => {
+            quizBody.innerHTML = `
+                <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
+                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
+                    <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
+                </div>
+            `;
+        }, 2000);
+    }
+}
+
+// Инициализация квиза
+showStep(1);
     </script>
 </body>
 </html>
