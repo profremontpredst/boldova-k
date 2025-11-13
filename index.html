@@ -816,36 +816,206 @@
                 font-size: 1.1rem;
             }
         }
-        /* СТИЛИ ДЛЯ КВИЗА */
-.receiving-box {
-    text-align: center;
-    padding: 40px 20px;
-    animation: fade .4s ease;
-}
-.pulse-img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    margin-bottom: 18px;
-    object-fit: cover;
-    animation: pulse 2s infinite;
-}
-.receiving-text {
-    font-size: 17px;
-    color: #0c2f66;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-.receiving-subtext {
-    font-size: 14px;
-    color: #7c8a9a;
-}
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-</style>
+    </style>
+    
+    <!-- СТИЛИ КВИЗА - НЕ ТРОГАТЬ! -->
+    <style>
+        /* КВИЗ - НЕ МЕНЯТЬ! */
+        .quiz-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .quiz-wrapper {
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .quiz__header {
+            background: #fff;
+            color: #0c2f66;
+            border-bottom: 2px solid #0066FF;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quiz__title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0c2f66;
+        }
+        
+        .quiz__progress {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .bar {
+            width: 120px;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(0,102,255,.15);
+            overflow: hidden;
+        }
+        
+        #pBar {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: #0066FF;
+            transition: width .25s ease;
+        }
+        
+        .quiz__body {
+            padding: 14px;
+            flex: 1;
+        }
+        
+        .step {
+            display: none;
+            animation: fade .25s ease;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .q {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0c2f66;
+            margin-bottom: 10px;
+        }
+        
+        .options {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .btn-opt {
+            border: 1px solid #DCE3EB;
+            border-radius: 8px;
+            padding: 10px;
+            background: transparent;
+            color: #0c2f66;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            transition: border-color .2s, background .2s, color .2s;
+        }
+        
+        .btn-opt:hover, .btn-opt.active {
+            border-color: #0066FF;
+            color: #0066FF;
+            background: #EFF5FF;
+        }
+        
+        .lead {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .field {
+            display: grid;
+            gap: 6px;
+        }
+        
+        .field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0c2f66;
+        }
+        
+        .input {
+            padding: 10px;
+            border: 1px solid #DCE3EB;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+        }
+        
+        #quizHoneypot {
+            display: none !important;
+        }
+        
+        .result {
+            display: none;
+            border: 1px dashed #DCE3EB;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f8fafc;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        
+        .muted {
+            display: none;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #7c8a9a;
+            text-align: center;
+        }
+        
+        .thanks-box {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .thanks-box img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 18px;
+            object-fit: cover;
+        }
+        
+        .thanks-box p {
+            font-size: 17px;
+            color: #0c2f66;
+            font-weight: 600;
+        }
+        
+        .footer {
+            border-top: 1px solid #E9EEF4;
+            background: #FAFBFD;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #7c8a9a;
+        }
+        
+        .footer a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+        
+        @media (max-width: 680px) {
+            .options {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .quiz__body {
+                padding: 12px !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- ВЕРХНЯЯ ПОЛОСА -->
@@ -952,125 +1122,130 @@
         </div>
     </section>
 
-    <!-- НОВЫЙ КВИЗ -->
-<section class="quiz-section" id="quiz">
-    <div class="container">
-        <div class="quiz-header" style="text-align: center; margin-bottom: 40px;">
-            <h2 class="section-title" style="color: white; margin-bottom: 20px;">Узнайте, можете ли вы подать на банкротство</h2>
-            <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
-                Пройдите короткий тест и получите предварительную оценку вашей ситуации: 
-                возможные сроки, стоимость процедуры и рекомендации специалиста
-            </p>
-            <div class="quiz-benefits" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0;">
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold;">📊</div>
-                    <div>Анализ за 2 минуты</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold;">⚖️</div>
-                    <div>Точный расчет</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold;">💰</div>
-                    <div>Предварительная стоимость</div>
+    <!-- СЕКЦИЯ КВИЗА - НЕ ТРОГАТЬ! -->
+    <section class="quiz-section" id="quiz">
+        <div class="container">
+            <div class="quiz-header" style="text-align: center; margin-bottom: 40px;">
+                <h2 class="section-title" style="color: white; margin-bottom: 20px;">Узнайте, можете ли вы подать на банкротство</h2>
+                <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
+                    Пройдите короткий тест и получите предварительную оценку вашей ситуации: 
+                    возможные сроки, стоимость процедуры и рекомендации специалиста
+                </p>
+                <div class="quiz-benefits" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">📊</div>
+                        <div>Анализ за 2 минуты</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">⚖️</div>
+                        <div>Точный расчет</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">💰</div>
+                        <div>Предварительная стоимость</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- КОНТЕЙНЕР КВИЗА -->
-        <div class="quiz-container">
-            <div class="quiz-wrapper">
-                <!-- ЗАГОЛОВОК КВИЗА -->
-                <div class="quiz__header">
-                    <div class="quiz__title">Проверка на банкротство</div>
-                    <div class="quiz__progress">
-                        <div class="bar">
-                            <span id="pBar"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ТЕЛО КВИЗА -->
-                <div class="quiz__body" id="quizBody">
-                    <!-- Шаг 1 -->
-                    <div class="step active" data-step="1">
-                        <div class="q">1. Какая у вас сумма долга?</div>
-                        <div class="options">
-                            <button class="btn-opt" data-name="debt" data-value="до 300 тыс.">До 300 тыс.</button>
-                            <button class="btn-opt" data-name="debt" data-value="300–500 тыс.">300–500 тыс.</button>
-                            <button class="btn-opt" data-name="debt" data-value="более 500 тыс.">Более 500 тыс.</button>
-                        </div>
-                    </div>
-
-                    <!-- Шаг 2 -->
-                    <div class="step" data-step="2">
-                        <div class="q">2. Есть ли просрочки?</div>
-                        <div class="options">
-                            <button class="btn-opt" data-name="delay" data-value="нет">Нет</button>
-                            <button class="btn-opt" data-name="delay" data-value="менее 3 мес.">Менее 3 мес.</button>
-                            <button class="btn-opt" data-name="delay" data-value="более 3 мес.">Более 3 мес.</button>
-                        </div>
-                    </div>
-
-                    <!-- Шаг 3 -->
-                    <div class="step" data-step="3">
-                        <div class="q">3. Работаете официально?</div>
-                        <div class="options">
-                            <button class="btn-opt" data-name="job" data-value="да">Да</button>
-                            <button class="btn-opt" data-name="job" data-value="нет">Нет</button>
-                        </div>
-                    </div>
-
-                    <!-- Шаг 4 -->
-                    <div class="step" data-step="4">
-                        <div class="q">4. Есть ли имущество кроме жилья?</div>
-                        <div class="options">
-                            <button class="btn-opt" data-name="property" data-value="нет">Нет</button>
-                            <button class="btn-opt" data-name="property" data-value="есть, хочу сохранить">Есть, хочу сохранить</button>
-                            <button class="btn-opt" data-name="property" data-value="готов продать">Готов продать</button>
-                        </div>
-                    </div>
-
-                    <!-- Шаг 5 -->
-                    <div class="step" data-step="5">
-                        <div class="q">5. Контакт для результата</div>
-                        <div class="lead">
-                            <div class="field">
-                                <label>Ваше имя</label>
-                                <input id="quizName" class="input" placeholder="Иван">
+            <!-- КВИЗ - НЕ МЕНЯТЬ! -->
+            <div class="quiz-container">
+                <div class="quiz-wrapper">
+                    <!-- Заголовок квиза -->
+                    <div class="quiz__header">
+                        <div class="quiz__title">Проверка на банкротство</div>
+                        <div class="quiz__progress">
+                            <div class="bar">
+                                <span id="pBar" style="display: block; height: 100%; width: 0%; background: #0066FF; transition: width .25s ease;"></span>
                             </div>
-                            <div class="field">
-                                <label>Телефон</label>
-                                <input id="quizPhone" class="input" placeholder="+7 900 000-00-00">
-                            </div>
-                            <input type="text" id="quizHoneypot" style="display: none !important;">
                         </div>
-                        <div class="result" id="summaryBox"></div>
-                        <div class="muted" id="autoHint" style="display:none;">Отправляем…</div>
                     </div>
-                </div>
 
-                <!-- ФУТЕР КВИЗА -->
-                <div class="footer">
-                    <a href="https://pravo31.ru/privacy/" target="_blank">Политика конфиденциальности</a>
+                    <!-- Тело квиза -->
+                    <div class="quiz__body" id="quizBody">
+                        <!-- Шаг 1 -->
+                        <div class="step active" data-step="1">
+                            <div class="q">1. Какая у вас сумма долга?</div>
+                            <div class="options">
+                                <button class="btn-opt" data-name="debt" data-value="до 300 тыс.">До 300 тыс.</button>
+                                <button class="btn-opt" data-name="debt" data-value="300–500 тыс.">300–500 тыс.</button>
+                                <button class="btn-opt" data-name="debt" data-value="более 500 тыс.">Более 500 тыс.</button>
+                            </div>
+                        </div>
+
+                        <!-- Шаг 2 -->
+                        <div class="step" data-step="2">
+                            <div class="q">2. Есть ли просрочки?</div>
+                            <div class="options">
+                                <button class="btn-opt" data-name="delay" data-value="нет">Нет</button>
+                                <button class="btn-opt" data-name="delay" data-value="менее 3 мес.">Менее 3 мес.</button>
+                                <button class="btn-opt" data-name="delay" data-value="более 3 мес.">Более 3 мес.</button>
+                            </div>
+                        </div>
+
+                        <!-- Шаг 3 -->
+                        <div class="step" data-step="3">
+                            <div class="q">3. Работаете официально?</div>
+                            <div class="options">
+                                <button class="btn-opt" data-name="job" data-value="да">Да</button>
+                                <button class="btn-opt" data-name="job" data-value="нет">Нет</button>
+                            </div>
+                        </div>
+
+                        <!-- Шаг 4 -->
+                        <div class="step" data-step="4">
+                            <div class="q">4. Есть ли имущество кроме жилья?</div>
+                            <div class="options">
+                                <button class="btn-opt" data-name="property" data-value="нет">Нет</button>
+                                <button class="btn-opt" data-name="property" data-value="есть, хочу сохранить">Есть, хочу сохранить</button>
+                                <button class="btn-opt" data-name="property" data-value="готов продать">Готов продать</button>
+                            </div>
+                        </div>
+
+                        <!-- Шаг 5 -->
+                        <div class="step" data-step="5">
+                            <div class="q">5. Контакт для результата</div>
+                            <div class="lead">
+                                <div class="field">
+                                    <label>Ваше имя</label>
+                                    <input id="quizName" class="input" placeholder="Иван">
+                                </div>
+                                <div class="field">
+                                    <label>Телефон</label>
+                                    <input id="quizPhone" class="input" placeholder="+7 900 000-00-00">
+                                </div>
+                                <input type="text" id="quizHoneypot" style="display: none !important;">
+                            </div>
+                            <div class="result" id="summaryBox" style="display: none; border: 1px dashed #DCE3EB; border-radius: 8px; padding: 10px; background: #f8fafc; font-size: 13px; margin-top: 8px;"></div>
+                            <div class="muted" id="autoHint" style="display: none; margin-top: 8px; font-size: 12px; color: #7c8a9a; text-align: center;">Отправляем…</div>
+                        </div>
+
+                        <!-- Экран благодарности -->
+                        <div class="thanks-box" id="thanksBox" style="display: none; text-align: center; padding: 40px 20px;">
+                            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
+                            <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
+                        </div>
+                    </div>
+
+                    <!-- Футер квиза -->
+                    <div class="footer">
+                        <a href="https://pravo31.ru/privacy/" target="_blank">Политика конфиденциальности</a>
+                    </div>
                 </div>
             </div>
+            
+            <div class="quiz-footer" style="text-align: center; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                <p style="margin-bottom: 15px; font-size: 0.9rem;">
+                    <strong>Внимание:</strong> Данный расчет не является офертой и предоставляется для предварительной оценки.
+                </p>
+                <p style="font-size: 0.85rem; opacity: 0.8;">
+                    Расчет выполнен на основе анализа Федерального закона "О несостоятельности (банкротстве)" №127-ФЗ, 
+                    судебной практики Арбитражных судов РФ, методических рекомендаций Саморегулируемой организации 
+                    Ассоциации "Союз межрегиональный центр арбитражных управляющих" (СОЮЗ МЦАУ) и статистики 
+                    завершенных дел за 2023-2024 годы.
+                </p>
+            </div>
         </div>
-
-        <!-- ФУТЕР СЕКЦИИ -->
-        <div class="quiz-footer" style="text-align: center; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; backdrop-filter: blur(10px);">
-            <p style="margin-bottom: 15px; font-size: 0.9rem;">
-                <strong>Внимание:</strong> Данный расчет не является офертой и предоставляется для предварительной оценки.
-            </p>
-            <p style="font-size: 0.85rem; opacity: 0.8;">
-                Расчет выполнен на основе анализа Федерального закона "О несостоятельности (банкротстве)" №127-ФЗ, 
-                судебной практики Арбитражных судов РФ, методических рекомендаций Саморегулируемой организации 
-                Ассоциации "Союз межрегиональный центр арбитражных управляющих" (СОЮЗ МЦАУ) и статистики 
-                завершенных дел за 2023-2024 годы.
-            </p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- СЕКЦИЯ ПРОФЕССИОНАЛЬНАЯ ДЕЯТЕЛЬНОСТЬ -->
     <section class="professional" id="professional">
@@ -1358,139 +1533,127 @@
             observer.observe(el);
         });
 
-        // НОВЫЙ СКРИПТ КВИЗА
-const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
-const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
-let step = 1, total = 5, answers = {}, events = [], last = Date.now(), submitting = false;
-const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
-const steps = $$(".step"), pBar = $("#pBar"), quizBody = $("#quizBody");
+        // СКРИПТ КВИЗА - НЕ ТРОГАТЬ!
+        // КОНФИГ ДЛЯ BOLDOVA-K
+        const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
+        const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
+        let step = 1, total = 5, answers = {}, events = [], last = Date.now(), submitting = false;
+        const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+        const steps = $$(".step"), pBar = $("#pBar"), autoHint = $("#autoHint"), thanks = $("#thanksBox"), quizBody = $("#quizBody");
 
-function showStep(n) {
-    steps.forEach(s => s.classList.remove("active"));
-    steps[n-1].classList.add("active");
-    pBar.style.width = ((n-1)/(total-1))*100 + "%";
-    step = n;
-}
-
-function pushEvent(type, label) {
-    const now = Date.now();
-    events.push({ type, label, intervalMs: now - last, timestamp: now });
-    last = now;
-}
-
-// Обработчики кнопок
-$$(".btn-opt").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const name = btn.dataset.name, val = btn.dataset.value;
-        btn.parentElement.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        answers[name] = val;
-        pushEvent("click", name + ":" + val);
-        if (step < total) {
-            showStep(++step);
+        function showStep(n) {
+            steps.forEach(s => s.style.display = "none");
+            steps[n-1].style.display = "block";
+            pBar.style.width = ((n-1)/(total-1))*100 + "%";
+            step = n;
         }
-    });
-});
 
-// Маска телефона
-const phone = document.getElementById("quizPhone");
-const mask = IMask(phone, { mask: '+{7} (000) 000-00-00' });
-const nameI = document.getElementById("quizName");
-const honeypot = document.getElementById("quizHoneypot");
+        function pushEvent(type, label) {
+            const now = Date.now();
+            events.push({ type, label, intervalMs: now - last, timestamp: now });
+            last = now;
+        }
 
-nameI.addEventListener('input', tryAutoSubmit);
-phone.addEventListener('input', tryAutoSubmit);
-
-async function tryAutoSubmit() {
-    if (step !== 5 || submitting) return;
-    
-    const name = nameI.value.trim();
-    let ph = phone.value.replace(/[^0-9+]/g, '');
-    
-    // Проверяем полный номер (+7 и 10 цифр)
-    const fullPhone = ph.startsWith('+7') && ph.length === 12;
-    if (honeypot.value || !name || !fullPhone) return;
-    
-    submitting = true;
-    
-    // МГНОВЕННО показываем экран получения заявки
-    const quizBody = document.getElementById('quizBody');
-    quizBody.innerHTML = `
-        <div class="receiving-box">
-            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения" class="pulse-img">
-            <div class="receiving-text">Получила вашу заявку</div>
-            <div class="receiving-subtext">Скоро свяжусь с вами</div>
-        </div>
-    `;
-
-    const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
-    localStorage.setItem("userId", userId);
-    
-    const payload = {
-        userId,
-        answers,
-        events,
-        phone: ph,
-        honeypot: honeypot.value,
-        durationMs: Date.now() - (events[0]?.timestamp || Date.now()),
-        frontend: "https://boldova-k.ru"
-    };
-    
-    try {
-        const r = await fetch(QUIZ_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        const d = await r.json();
-
-        // Если бот - логируем но не показываем пользователю
-        if (d.action === "deny") {
-            console.log("Bot detected:", d.reason);
-        } else {
-            // Отправляем лид если не бот
-            const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
-            await fetch(LEAD_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name,
-                    phone: ph,
-                    userId,
-                    source: "quiz",
-                    no_summary: true,
-                    answersSummary,
-                    messages: []
-                })
+        // Обработчики кнопок
+        $$(".btn-opt").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const name = btn.dataset.name, val = btn.dataset.value;
+                btn.parentElement.querySelectorAll(".btn-opt").forEach(b => {
+                    b.style.borderColor = "#DCE3EB";
+                    b.style.background = "transparent";
+                    b.style.color = "#0c2f66";
+                });
+                btn.style.borderColor = "#0066FF";
+                btn.style.color = "#0066FF";
+                btn.style.background = "#EFF5FF";
+                answers[name] = val;
+                pushEvent("click", name + ":" + val);
+                if (step < total) {
+                    showStep(++step);
+                }
             });
+        });
+
+        // Маска телефона
+        const phone = document.getElementById("quizPhone");
+        const mask = IMask(phone, { mask: '+{7} (000) 000-00-00' });
+        const nameI = document.getElementById("quizName");
+        const honeypot = document.getElementById("quizHoneypot");
+
+        nameI.addEventListener('input', tryAutoSubmit);
+        phone.addEventListener('input', tryAutoSubmit);
+
+        async function tryAutoSubmit() {
+            if (step !== 5 || submitting) return;
+            
+            const name = nameI.value.trim();
+            let ph = phone.value.replace(/[^0-9+]/g, '');
+            
+            // Проверяем полный номер (+7 и 10 цифр)
+            const fullPhone = ph.startsWith('+7') && ph.length === 12;
+            if (honeypot.value || !name || !fullPhone) return;
+            
+            submitting = true;
+            autoHint.style.display = "block";
+            
+            const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
+            localStorage.setItem("userId", userId);
+            
+            const payload = {
+                userId,
+                answers,
+                events,
+                phone: ph,
+                honeypot: honeypot.value,
+                durationMs: Date.now() - (events[0]?.timestamp || Date.now()),
+                frontend: "https://boldova-k.ru"
+            };
+            
+            try {
+                const r = await fetch(QUIZ_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const d = await r.json();
+                
+                const verdict = d.action === "allow" ? "✅ Подходит, юрист свяжется" : 
+                               d.action === "challenge" ? "⚠️ Нужна проверка" : "⛔️ Похоже, это бот";
+                
+                const summary = $("#summaryBox");
+                summary.style.display = "block";
+                summary.textContent = verdict;
+                
+                if (d.action !== "deny") {
+                    const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
+                    await fetch(LEAD_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name,
+                            phone: ph,
+                            userId,
+                            source: "quiz",
+                            no_summary: true,
+                            answersSummary,
+                            messages: []
+                        })
+                    });
+                }
+                
+                autoHint.textContent = "Готово ✔";
+                setTimeout(() => {
+                    $$(".step").forEach(s => s.style.display = "none");
+                    thanks.style.display = "block";
+                }, 800);
+                
+            } catch (e) {
+                autoHint.textContent = "Ошибка соединения";
+            }
         }
 
-        // Через 2 секунды показываем финальное спасибо
-        setTimeout(() => {
-            quizBody.innerHTML = `
-                <div class="receiving-box">
-                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения" style="width:90px;height:90px;border-radius:50%;margin-bottom:18px;object-fit:cover;">
-                    <div class="receiving-text">Скоро свяжусь с вами</div>
-                </div>
-            `;
-        }, 2000);
-
-    } catch (e) {
-        // В случае ошибки всё равно показываем спасибо
-        console.error("Submission error:", e);
-        setTimeout(() => {
-            quizBody.innerHTML = `
-                <div class="receiving-box">
-                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения" style="width:90px;height:90px;border-radius:50%;margin-bottom:18px;object-fit:cover;">
-                    <div class="receiving-text">Скоро свяжусь с вами</div>
-                </div>
-            `;
-        }, 2000);
-    }
-}
-
-// Инициализация квиза
-showStep(1);
+        // Инициализация квиза
+        showStep(1);
     </script>
 </body>
 </html>
