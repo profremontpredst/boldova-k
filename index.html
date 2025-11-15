@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* СБРОС СТИЛЕЙ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ОСНОВНЫЕ СТИЛИ */
         body {
             font-family: 'Open Sans', sans-serif;
             line-height: 1.6;
@@ -34,7 +32,6 @@
             padding: 0 20px;
         }
 
-        /* ШАПКА */
         .top-bar {
             background: #1a365d;
             color: white;
@@ -131,7 +128,6 @@
             box-shadow: 0 6px 18px rgba(43, 108, 176, 0.4);
         }
 
-        /* ГЛАВНЫЙ БАННЕР */
         .hero {
             background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             color: white;
@@ -221,7 +217,6 @@
             margin-bottom: 5px;
         }
 
-        /* СЕКЦИЯ ОБО МНЕ */
         .about {
             padding: 120px 0;
             background: #f8fafc;
@@ -321,14 +316,12 @@
             font-size: 1.2rem;
         }
 
-        /* СЕКЦИЯ КВИЗА - НЕ ТРОГАЕМ, ОСТАВЛЯЕМ КАК ЕСТЬ */
         .quiz-section {
             padding: 100px 0;
             background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             color: white;
         }
 
-        /* СЕКЦИЯ ПРОФЕССИОНАЛЬНАЯ ДЕЯТЕЛЬНОСТЬ */
         .professional {
             padding: 120px 0;
             background: white;
@@ -398,7 +391,6 @@
             font-weight: 500;
         }
 
-        /* СЕКЦИЯ ЭТАПЫ */
         .etap {
             padding: 120px 0;
             background: #f8fafc;
@@ -456,7 +448,6 @@
             line-height: 1.6;
         }
 
-        /* СЕКЦИЯ FAQ */
         .faq {
             padding: 120px 0;
             background: white;
@@ -517,7 +508,6 @@
             transform: rotate(45deg);
         }
 
-        /* КОНТАКТЫ */
         .contacts {
             padding: 120px 0;
             background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
@@ -573,7 +563,6 @@
             font-size: 1.2rem;
         }
 
-        /* ФУТЕР */
         .footer {
             background: #1a252f;
             color: white;
@@ -582,7 +571,6 @@
             font-size: 0.9rem;
         }
 
-        /* МОДАЛЬНОЕ ОКНО */
         .modal {
             display: none;
             position: fixed;
@@ -674,7 +662,6 @@
             background: #f7fafc;
         }
 
-        /* БУРГЕР-МЕНЮ */
         .burger {
             display: none;
             cursor: pointer;
@@ -690,7 +677,6 @@
             border-radius: 2px;
         }
 
-        /* АДАПТИВ */
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -818,9 +804,7 @@
         }
     </style>
     
-    <!-- СТИЛИ КВИЗА - НЕ ТРОГАТЬ! -->
     <style>
-        /* КВИЗ - НЕ МЕНЯТЬ! */
         .quiz-container {
             background: white;
             border-radius: 16px;
@@ -1018,14 +1002,12 @@
     </style>
 </head>
 <body>
-    <!-- ВЕРХНЯЯ ПОЛОСА -->
     <div class="top-bar">
         <div class="container">
             Консультация всегда бесплатна! Просто позвоните мне.
         </div>
     </div>
 
-    <!-- ШАПКА -->
     <header class="header">
         <div class="container">
             <nav class="nav">
@@ -1047,7 +1029,6 @@
         </div>
     </header>
 
-    <!-- ГЛАВНЫЙ БАННЕР -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
@@ -1080,7 +1061,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ОБО МНЕ -->
     <section class="about" id="about">
         <div class="container">
             <h2 class="section-title">Обо мне</h2>
@@ -1122,7 +1102,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ КВИЗА - НЕ ТРОГАТЬ! -->
     <section class="quiz-section" id="quiz">
         <div class="container">
             <div class="quiz-header" style="text-align: center; margin-bottom: 40px;">
@@ -1147,10 +1126,8 @@
                 </div>
             </div>
 
-            <!-- КВИЗ - НЕ МЕНЯТЬ! -->
             <div class="quiz-container">
                 <div class="quiz-wrapper">
-                    <!-- Заголовок квиза -->
                     <div class="quiz__header">
                         <div class="quiz__title">Проверка на банкротство</div>
                         <div class="quiz__progress">
@@ -1160,9 +1137,7 @@
                         </div>
                     </div>
 
-                    <!-- Тело квиза -->
                     <div class="quiz__body" id="quizBody">
-                        <!-- Шаг 1 -->
                         <div class="step active" data-step="1">
                             <div class="q">1. Какая у вас сумма долга?</div>
                             <div class="options">
@@ -1172,7 +1147,6 @@
                             </div>
                         </div>
 
-                        <!-- Шаг 2 -->
                         <div class="step" data-step="2">
                             <div class="q">2. Есть ли просрочки?</div>
                             <div class="options">
@@ -1182,7 +1156,6 @@
                             </div>
                         </div>
 
-                        <!-- Шаг 3 -->
                         <div class="step" data-step="3">
                             <div class="q">3. Работаете официально?</div>
                             <div class="options">
@@ -1191,7 +1164,6 @@
                             </div>
                         </div>
 
-                        <!-- Шаг 4 -->
                         <div class="step" data-step="4">
                             <div class="q">4. Есть ли имущество кроме жилья?</div>
                             <div class="options">
@@ -1201,7 +1173,6 @@
                             </div>
                         </div>
 
-                        <!-- Шаг 5 -->
                         <div class="step" data-step="5">
                             <div class="q">5. Контакт для результата</div>
                             <div class="lead">
@@ -1219,14 +1190,12 @@
                             <div class="muted" id="autoHint" style="display: none; margin-top: 8px; font-size: 12px; color: #7c8a9a; text-align: center;">Отправляем…</div>
                         </div>
 
-                        <!-- Экран благодарности -->
                         <div class="thanks-box" id="thanksBox" style="display: none; text-align: center; padding: 40px 20px;">
                             <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
                             <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
                         </div>
                     </div>
 
-                    <!-- Футер квиза -->
                     <div class="footer">
                         <a href="https://pravo31.ru/privacy/" target="_blank">Политика конфиденциальности</a>
                     </div>
@@ -1247,7 +1216,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ПРОФЕССИОНАЛЬНАЯ ДЕЯТЕЛЬНОСТЬ -->
     <section class="professional" id="professional">
         <div class="container">
             <h2 class="section-title">Профессиональная деятельность</h2>
@@ -1278,7 +1246,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ЭТАПЫ -->
     <section class="etap" id="etap">
         <div class="container">
             <h2 class="section-title">Этапы работы</h2>
@@ -1307,7 +1274,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ FAQ -->
     <section class="faq" id="faq">
         <div class="container">
             <h2 class="section-title">Частые вопросы</h2>
@@ -1350,7 +1316,6 @@
         </div>
     </section>
 
-    <!-- КОНТАКТЫ -->
     <section class="contacts" id="contacts">
         <div class="container">
             <h2 class="section-title" style="color: white;">Контакты</h2>
@@ -1375,36 +1340,56 @@
         </div>
     </section>
 
-    <!-- ФУТЕР -->
     <footer class="footer">
         <div class="container">
             <p>&copy; 2024 Болдова Ксения. Арбитражный управляющий. Все права защищены.</p>
         </div>
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <button class="close-modal">&times;</button>
             <h2>Получить консультацию</h2>
-            <form id="contact-form">
-                <div class="form-group">
-                    <label for="name">Ваше имя</label>
-                    <input type="text" id="name" placeholder="Иван" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" placeholder="+7 (900) 000-00-00" required>
-                </div>
-                <button type="submit" class="btn" style="width: 100%;">Отправить заявку</button>
-            </form>
+            
+            <div id="smart-form">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" placeholder="Иван" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" placeholder="+7 (900) 000-00-00" required>
+                    </div>
+                    
+                    <input type="text" id="honeypot" style="display:none !important;">
+                    
+                    <button type="submit" class="btn" style="width: 100%;" id="sendBtn">Отправить заявку</button>
+                    
+                    <button id="fakeBtn" tabindex="-1" style="opacity:0;height:0;width:0;overflow:hidden;position:absolute;left:-9999px;">Не нажимай</button>
+                </form>
+                
+                <div class="muted" id="status" style="margin-top:10px;font-size:12px;text-align:center;color:#7c8a9a;"></div>
+            </div>
+            
+            <div id="receiving-screen" style="display: none; text-align: center; padding: 40px 20px;">
+                <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width:90px;height:90px;border-radius:50%;margin-bottom:18px;object-fit:cover;animation:pulse 2s infinite;">
+                <div style="font-size:17px;color:#1a365d;font-weight:600;margin-bottom:8px;">Получила вашу заявку</div>
+                <div style="font-size:14px;color:#4a5568;">Скоро свяжусь с вами для консультации</div>
+            </div>
+            
+            <div id="thanks-screen" style="display: none; text-align: center; padding: 40px 20px;">
+                <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width:90px;height:90px;border-radius:50%;margin-bottom:18px;object-fit:cover;">
+                <div style="font-size:17px;color:#1a365d;font-weight:600;">Получила ваш контакт, скоро свяжусь с вами</div>
+            </div>
         </div>
     </div>
 
-    <!-- СКРИПТЫ -->
     <script src="https://unpkg.com/imask"></script>
     <script>
-        // МОДАЛЬНОЕ ОКНО
+        const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
+        const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
+
         const modal = document.getElementById('modal');
         const openModalButtons = document.querySelectorAll('.open-modal');
         const closeModalButton = document.querySelector('.close-modal');
@@ -1414,23 +1399,138 @@
                 e.preventDefault();
                 modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+                resetForm();
             });
         });
 
         closeModalButton.addEventListener('click', () => {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+            resetForm();
         });
 
-        // Закрытие модалки при клике вне её
         window.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
+                resetForm();
             }
         });
 
-        // FAQ
+        let events = [], last = Date.now();
+
+        function pushEvent(type, label) {
+            const now = Date.now();
+            events.push({ type, label, intervalMs: now - last, timestamp: now });
+            last = now;
+        }
+
+        ["click", "input", "focus"].forEach(ev => {
+            document.addEventListener(ev, e => {
+                if (e.target.id === "honeypot") return;
+                pushEvent(ev, e.target.id || e.target.tagName);
+            }, true);
+        });
+
+        document.getElementById("fakeBtn").addEventListener("click", () => {
+            pushEvent("fake_click", "bot_suspect");
+        });
+
+        const phoneInput = document.getElementById("phone");
+        const mask = IMask(phoneInput, { mask: '+{7} (000) 000-00-00' });
+
+        document.getElementById("contact-form").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById("name").value.trim();
+            const phone = phoneInput.value.replace(/[^0-9+]/g, '');
+            const honeypot = document.getElementById("honeypot").value;
+            const status = document.getElementById("status");
+
+            if (honeypot) return;
+            if (!name || phone.length < 12) {
+                status.textContent = "Введите корректные данные";
+                return;
+            }
+
+            document.getElementById("sendBtn").disabled = true;
+            document.getElementById("smart-form").style.display = "none";
+            document.getElementById("receiving-screen").style.display = "block";
+
+            const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
+            localStorage.setItem("userId", userId);
+            const duration = Date.now() - (events[0]?.timestamp || Date.now());
+            
+            const payload = {
+                userId,
+                answers: { name, phone },
+                events,
+                phone: phone,
+                honeypot,
+                durationMs: duration,
+                frontend: "https://boldova-k.ru"
+            };
+
+            try {
+                const check = await fetch(QUIZ_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const res = await check.json();
+
+                if (res.action !== "deny") {
+                    await fetch(LEAD_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name,
+                            phone: phone,
+                            userId,
+                            source: "smart_form",
+                            no_summary: true,
+                            answersSummary: `Умная форма: ${name}, ${phone}`,
+                            messages: []
+                        })
+                    });
+                }
+
+                setTimeout(() => {
+                    document.getElementById("receiving-screen").style.display = "none";
+                    document.getElementById("thanks-screen").style.display = "block";
+                    
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        document.body.style.overflow = "auto";
+                        resetForm();
+                    }, 3000);
+                }, 2000);
+
+            } catch (error) {
+                setTimeout(() => {
+                    document.getElementById("receiving-screen").style.display = "none";
+                    document.getElementById("thanks-screen").style.display = "block";
+                    
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        document.body.style.overflow = "auto";
+                        resetForm();
+                    }, 3000);
+                }, 2000);
+            }
+        });
+
+        function resetForm() {
+            document.getElementById("smart-form").style.display = "block";
+            document.getElementById("receiving-screen").style.display = "none";
+            document.getElementById("thanks-screen").style.display = "none";
+            document.getElementById("contact-form").reset();
+            document.getElementById("sendBtn").disabled = false;
+            document.getElementById("status").textContent = "";
+            events = [];
+            last = Date.now();
+        }
+
         const faqQuestions = document.querySelectorAll('.faq-question');
         
         faqQuestions.forEach(question => {
@@ -1438,19 +1538,16 @@
                 const faqItem = question.parentElement;
                 const isActive = faqItem.classList.contains('faq-active');
                 
-                // Закрываем все FAQ
                 document.querySelectorAll('.faq-item').forEach(item => {
                     item.classList.remove('faq-active');
                 });
                 
-                // Открываем текущий, если он был закрыт
                 if (!isActive) {
                     faqItem.classList.add('faq-active');
                 }
             });
         });
 
-        // ПЛАВНАЯ ПРОКРУТКА
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1461,7 +1558,6 @@
                         block: 'start'
                     });
                     
-                    // Закрываем меню на мобилке после клика
                     if (navMenu.classList.contains('nav-active')) {
                         navMenu.classList.remove('nav-active');
                         burger.classList.remove('toggle');
@@ -1471,7 +1567,6 @@
             });
         });
 
-        // ФИКСИРОВАННАЯ ШАПКА
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
             if (window.scrollY > 100) {
@@ -1485,7 +1580,6 @@
             }
         });
 
-        // БУРГЕР-МЕНЮ
         const burger = document.querySelector('.burger');
         const navMenu = document.querySelector('.nav-menu');
         
@@ -1493,7 +1587,6 @@
             navMenu.classList.toggle('nav-active');
             burger.classList.toggle('toggle');
             
-            // Блокируем прокрутку тела при открытом меню
             if (navMenu.classList.contains('nav-active')) {
                 document.body.style.overflow = 'hidden';
             } else {
@@ -1501,16 +1594,6 @@
             }
         });
 
-        // ОБРАБОТКА ФОРМЫ
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            this.reset();
-        });
-
-        // АНИМАЦИЯ ПРИ ПРОКРУТКЕ
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1525,7 +1608,6 @@
             });
         }, observerOptions);
 
-        // Наблюдаем за элементами для анимации
         document.querySelectorAll('.stat-card, .step, .feature, .contact-item').forEach(el => {
             el.style.opacity = 0;
             el.style.transform = 'translateY(20px)';
@@ -1533,144 +1615,132 @@
             observer.observe(el);
         });
 
-        // СКРИПТ КВИЗА - НЕ ТРОГАТЬ!
-        // КОНФИГ ДЛЯ BOLDOVA-K
-        // ЗАМЕНИТЬ ЭТОТ СКРИПТ КВИЗА В САЙТЕ БОЛДОВОЙ КСЕНИИ:
+        const QUIZ_URL2 = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
+        const LEAD_URL2 = "https://openai-gpt-proxy-d2py.onrender.com/lead";
+        let step = 1, total = 5, answers = {}, events2 = [], last2 = Date.now(), submitting = false;
+        const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+        const steps = $$(".step"), pBar = $("#pBar"), autoHint = $("#autoHint"), thanks = $("#thanksBox"), quizBody = $("#quizBody");
 
-const QUIZ_URL = "https://openai-gpt-proxy-d2py.onrender.com/quiz";
-const LEAD_URL = "https://openai-gpt-proxy-d2py.onrender.com/lead";
-let step = 1, total = 5, answers = {}, events = [], last = Date.now(), submitting = false;
-const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
-const steps = $$(".step"), pBar = $("#pBar"), autoHint = $("#autoHint"), thanks = $("#thanksBox"), quizBody = $("#quizBody");
-
-function showStep(n) {
-    steps.forEach(s => s.style.display = "none");
-    steps[n-1].style.display = "block";
-    pBar.style.width = ((n-1)/(total-1))*100 + "%";
-    step = n;
-}
-
-function pushEvent(type, label) {
-    const now = Date.now();
-    events.push({ type, label, intervalMs: now - last, timestamp: now });
-    last = now;
-}
-
-// Обработчики кнопок
-$$(".btn-opt").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const name = btn.dataset.name, val = btn.dataset.value;
-        btn.parentElement.querySelectorAll(".btn-opt").forEach(b => {
-            b.style.borderColor = "#DCE3EB";
-            b.style.background = "transparent";
-            b.style.color = "#0c2f66";
-        });
-        btn.style.borderColor = "#0066FF";
-        btn.style.color = "#0066FF";
-        btn.style.background = "#EFF5FF";
-        answers[name] = val;
-        pushEvent("click", name + ":" + val);
-        if (step < total) {
-            showStep(++step);
+        function showStep(n) {
+            steps.forEach(s => s.style.display = "none");
+            steps[n-1].style.display = "block";
+            pBar.style.width = ((n-1)/(total-1))*100 + "%";
+            step = n;
         }
-    });
-});
 
-// Маска телефона
-const phone = document.getElementById("quizPhone");
-const mask = IMask(phone, { mask: '+{7} (000) 000-00-00' });
-const nameI = document.getElementById("quizName");
-const honeypot = document.getElementById("quizHoneypot");
+        function pushEvent2(type, label) {
+            const now = Date.now();
+            events2.push({ type, label, intervalMs: now - last2, timestamp: now });
+            last2 = now;
+        }
 
-nameI.addEventListener('input', tryAutoSubmit);
-phone.addEventListener('input', tryAutoSubmit);
-
-async function tryAutoSubmit() {
-    if (step !== 5 || submitting) return;
-    
-    const name = nameI.value.trim();
-    let ph = phone.value.replace(/[^0-9+]/g, '');
-    
-    // Проверяем полный номер (+7 и 10 цифр)
-    const fullPhone = ph.startsWith('+7') && ph.length === 12;
-    if (honeypot.value || !name || !fullPhone) return;
-    
-    submitting = true;
-    
-    // СРАЗУ ПОКАЗЫВАЕМ ЭКРАН "ПОЛУЧИЛА ЗАЯВКУ"
-    quizBody.innerHTML = `
-        <div class="receiving-box" style="text-align: center; padding: 40px 20px;">
-            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover; animation: pulse 2s infinite;">
-            <p style="font-size: 17px; color: #0c2f66; font-weight: 600; margin-bottom: 8px;">Получила вашу заявку</p>
-            <p style="font-size: 14px; color: #7c8a9a;">Скоро свяжусь с вами</p>
-        </div>
-    `;
-
-    const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
-    localStorage.setItem("userId", userId);
-    
-    const payload = {
-        userId,
-        answers,
-        events,
-        phone: ph,
-        honeypot: honeypot.value,
-        durationMs: Date.now() - (events[0]?.timestamp || Date.now()),
-        frontend: "https://boldova-k.ru"
-    };
-    
-    try {
-        const r = await fetch(QUIZ_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        const d = await r.json();
-        
-        // Если не бот - отправляем лид
-        if (d.action !== "deny") {
-            const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
-            await fetch(LEAD_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name,
-                    phone: ph,
-                    userId,
-                    source: "quiz",
-                    no_summary: true,
-                    answersSummary,
-                    messages: []
-                })
+        $$(".btn-opt").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const name = btn.dataset.name, val = btn.dataset.value;
+                btn.parentElement.querySelectorAll(".btn-opt").forEach(b => {
+                    b.style.borderColor = "#DCE3EB";
+                    b.style.background = "transparent";
+                    b.style.color = "#0c2f66";
+                });
+                btn.style.borderColor = "#0066FF";
+                btn.style.color = "#0066FF";
+                btn.style.background = "#EFF5FF";
+                answers[name] = val;
+                pushEvent2("click", name + ":" + val);
+                if (step < total) {
+                    showStep(++step);
+                }
             });
-        }
-        
-        // Через 2 секунды показываем финальное "Скоро свяжусь"
-        setTimeout(() => {
-            quizBody.innerHTML = `
-                <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
-                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
-                    <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
-                </div>
-            `;
-        }, 2000);
-        
-    } catch (e) {
-        // В случае ошибки всё равно показываем спасибо
-        console.error("Submission error:", e);
-        setTimeout(() => {
-            quizBody.innerHTML = `
-                <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
-                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
-                    <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
-                </div>
-            `;
-        }, 2000);
-    }
-}
+        });
 
-// Инициализация квиза
-showStep(1);
+        const phone2 = document.getElementById("quizPhone");
+        const mask2 = IMask(phone2, { mask: '+{7} (000) 000-00-00' });
+        const nameI = document.getElementById("quizName");
+        const honeypot2 = document.getElementById("quizHoneypot");
+
+        nameI.addEventListener('input', tryAutoSubmit);
+        phone2.addEventListener('input', tryAutoSubmit);
+
+        async function tryAutoSubmit() {
+            if (step !== 5 || submitting) return;
+            
+            const name = nameI.value.trim();
+            let ph = phone2.value.replace(/[^0-9+]/g, '');
+            
+            const fullPhone = ph.startsWith('+7') && ph.length === 12;
+            if (honeypot2.value || !name || !fullPhone) return;
+            
+            submitting = true;
+            
+            quizBody.innerHTML = `
+                <div class="receiving-box" style="text-align: center; padding: 40px 20px;">
+                    <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover; animation: pulse 2s infinite;">
+                    <p style="font-size: 17px; color: #0c2f66; font-weight: 600; margin-bottom: 8px;">Получила вашу заявку</p>
+                    <p style="font-size: 14px; color: #7c8a9a;">Скоро свяжусь с вами</p>
+                </div>
+            `;
+
+            const userId = localStorage.getItem("userId") || ("user_" + Math.random().toString(36).slice(2, 10));
+            localStorage.setItem("userId", userId);
+            
+            const payload = {
+                userId,
+                answers,
+                events: events2,
+                phone: ph,
+                honeypot: honeypot2.value,
+                durationMs: Date.now() - (events2[0]?.timestamp || Date.now()),
+                frontend: "https://boldova-k.ru"
+            };
+            
+            try {
+                const r = await fetch(QUIZ_URL2, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const d = await r.json();
+                
+                if (d.action !== "deny") {
+                    const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
+                    await fetch(LEAD_URL2, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name,
+                            phone: ph,
+                            userId,
+                            source: "quiz",
+                            no_summary: true,
+                            answersSummary,
+                            messages: []
+                        })
+                    });
+                }
+                
+                setTimeout(() => {
+                    quizBody.innerHTML = `
+                        <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
+                            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
+                            <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
+                        </div>
+                    `;
+                }, 2000);
+                
+            } catch (e) {
+                console.error("Submission error:", e);
+                setTimeout(() => {
+                    quizBody.innerHTML = `
+                        <div class="thanks-box" style="display: block; text-align: center; padding: 40px 20px;">
+                            <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 18px; object-fit: cover;">
+                            <p style="font-size: 17px; color: #0c2f66; font-weight: 600;">Скоро свяжусь с вами</p>
+                        </div>
+                    `;
+                }, 2000);
+            }
+        }
+
+        showStep(1);
     </script>
 </body>
 </html>
