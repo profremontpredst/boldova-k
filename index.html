@@ -1970,14 +1970,15 @@
             const duration = Date.now() - (events[0]?.timestamp || Date.now());
             
             const payload = {
-                userId,
-                answers: { name, phone },
-                events,
-                phone: phone,
-                honeypot,
-                durationMs: duration,
-                frontend: "https://boldova-k.ru"
-            };
+    userId,
+    answers: { name, phone },
+    events,
+    phone: phone,
+    honeypot,
+    durationMs: duration,
+    frontend: "https://boldova-k.ru",
+    utm: JSON.parse(localStorage.getItem("UTM") || "{}")
+};
 
             try {
                 const check = await fetch(QUIZ_URL, {
@@ -2192,14 +2193,15 @@
             localStorage.setItem("userId", userId);
             
             const payload = {
-                userId,
-                answers,
-                events: events2,
-                phone: ph,
-                honeypot: honeypot2.value,
-                durationMs: Date.now() - (events2[0]?.timestamp || Date.now()),
-                frontend: "https://boldova-k.ru"
-            };
+    userId,
+    answers,
+    events: events2,
+    phone: ph,
+    honeypot: honeypot2.value,
+    durationMs: Date.now() - (events2[0]?.timestamp || Date.now()),
+    frontend: "https://boldova-k.ru",
+    utm: JSON.parse(localStorage.getItem("UTM") || "{}")
+};
             
             try {
                 const r = await fetch(QUIZ_URL2, {
