@@ -2251,6 +2251,19 @@
         }
 
         showStep(1);
+        // === UTM СБОР ===
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    const utm = {
+        utm_source: params.get("utm_source") || "",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || "",
+        utm_term: params.get("utm_term") || "",
+        utm_content: params.get("utm_content") || ""
+    };
+    localStorage.setItem("UTM", JSON.stringify(utm));
+})();
+
     </script>
 </body>
 </html>
