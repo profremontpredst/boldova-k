@@ -1033,6 +1033,95 @@
     display: none !important;
   }
 }
+
+/* === MOBILE FIX — ВСТАВИТЬ В САМЫЙ КОНЕЦ CSS === */
+@media (max-width: 768px){
+
+html, body{
+  width:100%;
+  overflow-x:hidden;
+}
+
+.container{
+  max-width:100%;
+  padding:0 16px;
+}
+
+/* HEADER */
+.header{
+  top:0;
+}
+.nav{
+  padding:10px 0;
+}
+.header .btn{
+  display:none !important;
+}
+.logo{
+  font-size:12px;
+  gap:8px;
+}
+.logo:before{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+}
+
+/* HERO */
+.hero{
+  padding:120px 0 70px;
+}
+.hero-content{
+  grid-template-columns:1fr;
+  gap:28px;
+}
+.hero h1{
+  font-size:1.9rem;
+}
+.hero-subtitle{
+  font-size:1.05rem;
+}
+
+/* STATS */
+.stats{
+  flex-direction:column;
+  gap:12px;
+}
+
+/* IMAGE */
+.hero-image img{
+  width:100%;
+  height:auto;
+}
+.experience-badge{
+  position:relative;
+  right:auto;
+  bottom:auto;
+  margin-top:14px;
+}
+
+/* ABOUT / SECTIONS */
+.about-content,
+.professional-main{
+  grid-template-columns:1fr !important;
+  gap:32px;
+}
+
+img{
+  max-width:100%;
+  height:auto;
+}
+
+/* QUIZ */
+.quiz-container{
+  margin:0;
+}
+
+/* TIMELINE */
+.timeline{
+  padding-left:0;
+}
+}
   </style>
 </head>
 
