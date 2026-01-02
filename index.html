@@ -2064,15 +2064,16 @@ img{
       const duration = Date.now() - (events[0]?.timestamp || Date.now());
 
       const payload = {
-        userId,
-        answers: { name, phone },
-        events,
-        phone: phone,
-        honeypot,
-        durationMs: duration,
-        frontend: "https://boldova-k.ru",
-        utm: JSON.parse(localStorage.getItem("UTM") || "{}")
-      };
+  siteId: "site_boldova",
+  userId,
+  answers: { name, phone },
+  events,
+  phone: phone,
+  honeypot,
+  durationMs: duration,
+  frontend: "https://boldova-k.ru",
+  utm: JSON.parse(localStorage.getItem("UTM") || "{}")
+};
 
       try {
         const check = await fetch(QUIZ_URL, {
@@ -2082,21 +2083,21 @@ img{
         });
         const res = await check.json();
 
-        if (res.action !== "deny") {
-          await fetch(LEAD_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name,
-              phone: phone,
-              userId,
-              source: "smart_form",
-              no_summary: true,
-              answersSummary: `Умная форма: ${name}, ${phone}`,
-              messages: []
-            })
-          });
-        }
+        if (res.allowLead === true) {
+  await fetch(LEAD_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      phone: phone,
+      userId,
+      source: "smart_form",
+      no_summary: true,
+      answersSummary: `Умная форма: ${name}, ${phone}`,
+      messages: []
+    })
+  });
+}
 
         setTimeout(() => {
           document.getElementById("receiving-screen").style.display = "none";
@@ -2289,15 +2290,16 @@ img{
       localStorage.setItem("userId", userId);
 
       const payload = {
-        userId,
-        answers,
-        events: events2,
-        phone: ph,
-        honeypot: honeypot2.value,
-        durationMs: Date.now() - (events2[0]?.timestamp || Date.now()),
-        frontend: "https://boldova-k.ru",
-        utm: JSON.parse(localStorage.getItem("UTM") || "{}")
-      };
+  siteId: "site_boldova",
+  userId,
+  answers,
+  events: events2,
+  phone: ph,
+  honeypot: honeypot2.value,
+  durationMs: Date.now() - (events2[0]?.timestamp || Date.now()),
+  frontend: "https://boldova-k.ru",
+  utm: JSON.parse(localStorage.getItem("UTM") || "{}")
+};
 
       try {
         const r = await fetch(QUIZ_URL2, {
@@ -2307,22 +2309,25 @@ img{
         });
         const d = await r.json();
 
-        if (d.action !== "deny") {
-          const answersSummary = Object.entries(answers).map(([q, a]) => `${q}: ${a}`).join("; ");
-          await fetch(LEAD_URL2, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name,
-              phone: ph,
-              userId,
-              source: "quiz",
-              no_summary: true,
-              answersSummary,
-              messages: []
-            })
-          });
-        }
+        if (d.allowLead === true) {
+  const answersSummary = Object.entries(answers)
+    .map(([q, a]) => `${q}: ${a}`)
+    .join("; ");
+
+  await fetch(LEAD_URL2, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      phone: ph,
+      userId,
+      source: "quiz",
+      no_summary: true,
+      answersSummary,
+      messages: []
+    })
+  });
+}
 
         setTimeout(() => {
           quizBody.innerHTML = `
