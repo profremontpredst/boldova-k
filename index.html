@@ -1126,6 +1126,12 @@ img{
 </head>
 <body>
 
+  <div class="top-bar">
+    <div class="container">
+      Сертифицированный арбитражный управляющий
+    </div>
+  </div>
+
   <header class="header">
     <div class="container">
       <nav class="nav">
@@ -1254,7 +1260,7 @@ img{
         </div>
       </div>
 
-      <div class="quiz-container" data-gigabot-ignore>
+      <div class="quiz-container">
         <div class="quiz-wrapper">
           <div class="quiz__header">
             <div class="quiz__title">Проверка на банкротство</div>
@@ -1265,39 +1271,39 @@ img{
             </div>
           </div>
 
-          <div class="quiz__body" id="quizBody">
+          <form class="quiz__body" id="quizForm" action="javascript:void(0)">
             <div class="step active" data-step="1">
               <div class="q">1. Какая у вас сумма долга?</div>
               <div class="options">
-                <button class="btn-opt" data-name="debt" data-value="до 300 тыс.">До 300 тыс.</button>
-                <button class="btn-opt" data-name="debt" data-value="300–500 тыс.">300–500 тыс.</button>
-                <button class="btn-opt" data-name="debt" data-value="более 500 тыс.">Более 500 тыс.</button>
+                <button type="button" class="btn-opt" data-name="debt" data-value="до 300 тыс.">До 300 тыс.</button>
+                <button type="button" class="btn-opt" data-name="debt" data-value="300–500 тыс.">300–500 тыс.</button>
+                <button type="button" class="btn-opt" data-name="debt" data-value="более 500 тыс.">Более 500 тыс.</button>
               </div>
             </div>
 
             <div class="step" data-step="2">
               <div class="q">2. Есть ли просрочки?</div>
               <div class="options">
-                <button class="btn-opt" data-name="delay" data-value="нет">Нет</button>
-                <button class="btn-opt" data-name="delay" data-value="менее 3 мес.">Менее 3 мес.</button>
-                <button class="btn-opt" data-name="delay" data-value="более 3 мес.">Более 3 мес.</button>
+                <button type="button" class="btn-opt" data-name="delay" data-value="нет">Нет</button>
+                <button type="button" class="btn-opt" data-name="delay" data-value="менее 3 мес.">Менее 3 мес.</button>
+                <button type="button" class="btn-opt" data-name="delay" data-value="более 3 мес.">Более 3 мес.</button>
               </div>
             </div>
 
             <div class="step" data-step="3">
               <div class="q">3. Работаете официально?</div>
               <div class="options">
-                <button class="btn-opt" data-name="job" data-value="да">Да</button>
-                <button class="btn-opt" data-name="job" data-value="нет">Нет</button>
+                <button type="button" class="btn-opt" data-name="job" data-value="да">Да</button>
+                <button type="button" class="btn-opt" data-name="job" data-value="нет">Нет</button>
               </div>
             </div>
 
             <div class="step" data-step="4">
               <div class="q">4. Есть ли имущество кроме жилья?</div>
               <div class="options">
-                <button class="btn-opt" data-name="property" data-value="нет">Нет</button>
-                <button class="btn-opt" data-name="property" data-value="есть, хочу сохранить">Есть, хочу сохранить</button>
-                <button class="btn-opt" data-name="property" data-value="готов продать">Готов продать</button>
+                <button type="button" class="btn-opt" data-name="property" data-value="нет">Нет</button>
+                <button type="button" class="btn-opt" data-name="property" data-value="есть, хочу сохранить">Есть, хочу сохранить</button>
+                <button type="button" class="btn-opt" data-name="property" data-value="готов продать">Готов продать</button>
               </div>
             </div>
 
@@ -1313,17 +1319,24 @@ img{
                   <input id="quizPhone" class="input" placeholder="+7 900 000-00-00">
                 </div>
                 <input type="text" id="quizHoneypot" style="display: none !important;">
+                <input type="hidden" name="debt" id="quizDebt">
+                <input type="hidden" name="delay" id="quizDelay">
+                <input type="hidden" name="job" id="quizJob">
+                <input type="hidden" name="property" id="quizProperty">
               </div>
 
               <div class="result" id="summaryBox" style="display: none;"></div>
               <div class="muted" id="autoHint" style="display: none;">Отправляем…</div>
+              <button type="submit" class="btn" id="quizSubmit" style="width:100%; margin-top: 12px;">
+                Получить результат
+              </button>
             </div>
 
             <div class="thanks-box" id="thanksBox" style="display: none;">
               <img src="https://i.imgur.com/48jRm82.png" alt="Ксения Болдова">
               <p>Скоро свяжусь с вами</p>
             </div>
-          </div>
+          </form>
 
           <div class="footer">
             <a href="/privacy-policy" target="_blank">Политика конфиденциальности</a>
@@ -1947,7 +1960,7 @@ img{
       <h2>Получить консультацию</h2>
 
       <div id="smart-form">
-        <form id="contact-form" data-gigabot-ignore>
+        <form id="contact-form" action="javascript:void(0)">
           <div class="form-group">
             <label for="name">Ваше имя</label>
             <input type="text" id="name" placeholder="Иван" required>
@@ -1988,11 +2001,227 @@ img{
     </div>
   </div>
 
+  <script src="https://unpkg.com/imask"></script>
   <script>
     window.GIGABOT_SITE_ID = "site_boldova";
     window.GIGABOT_PUBLIC_KEY = "pk_live_site_boldova_001";
   </script>
-  <script src="https://gigabot-db4r.onrender.com/widget.js" async></script>  
+  <script src="https://gigabot-db4r.onrender.com/widget.js" async></script>
+  <script>
+    const modal = document.getElementById('modal');
+    const openModalButtons = document.querySelectorAll('.open-modal');
+    const closeModalButton = document.querySelector('.close-modal');
+
+    const burger = document.querySelector('.burger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    function resetForm() {
+      document.getElementById("smart-form").style.display = "block";
+      document.getElementById("receiving-screen").style.display = "none";
+      document.getElementById("thanks-screen").style.display = "none";
+      document.getElementById("contact-form").reset();
+      document.getElementById("sendBtn").disabled = false;
+      document.getElementById("status").textContent = "";
+    }
+
+    // === MODAL OPEN/CLOSE (UI) ===
+    openModalButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        resetForm();
+      });
+    });
+
+    closeModalButton.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      resetForm();
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        resetForm();
+      }
+    });
+
+    // === MASKS ===
+    const phoneInput = document.getElementById("phone");
+    IMask(phoneInput, { mask: '+{7} (000) 000-00-00' });
+
+    const phone2 = document.getElementById("quizPhone");
+    IMask(phone2, { mask: '+{7} (000) 000-00-00' });
+
+    // === MODAL FORM SUBMIT (ТОЛЬКО UI, антибот теперь в widget.js) ===
+    document.getElementById("contact-form").addEventListener("submit", function() {
+      const name = document.getElementById("name").value.trim();
+      const phone = phoneInput.value.replace(/[^0-9+]/g, '');
+      const honeypot = document.getElementById("honeypot").value;
+      const status = document.getElementById("status");
+
+      if (honeypot) return;
+
+      if (!name || phone.length < 12) {
+        status.textContent = "Введите корректные данные";
+        return;
+      }
+
+      document.getElementById("sendBtn").disabled = true;
+      document.getElementById("smart-form").style.display = "none";
+      document.getElementById("receiving-screen").style.display = "block";
+
+      setTimeout(() => {
+        document.getElementById("receiving-screen").style.display = "none";
+        document.getElementById("thanks-screen").style.display = "block";
+
+        setTimeout(() => {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+          resetForm();
+        }, 3000);
+      }, 2000);
+    });
+
+    // === FAQ ===
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const faqItem = question.parentElement;
+        const isActive = faqItem.classList.contains('faq-active');
+
+        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('faq-active'));
+        if (!isActive) faqItem.classList.add('faq-active');
+      });
+    });
+
+    // === SMOOTH SCROLL + CLOSE MENU ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          if (navMenu.classList.contains('nav-active')) {
+            navMenu.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+            document.body.style.overflow = 'auto';
+          }
+        }
+      });
+    });
+
+    // === HEADER ON SCROLL ===
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 100) {
+        header.style.background = 'rgba(5,6,8,.78)';
+        header.style.backdropFilter = 'blur(14px)';
+        header.style.boxShadow = '0 12px 45px rgba(0,0,0,.55)';
+        header.style.borderBottom = '1px solid rgba(255,255,255,.08)';
+      } else {
+        header.style.background = 'rgba(5,6,8,.72)';
+        header.style.backdropFilter = 'blur(14px)';
+        header.style.boxShadow = '0 8px 40px rgba(0,0,0,.55)';
+        header.style.borderBottom = '1px solid rgba(255,255,255,.06)';
+      }
+    });
+
+    // === BURGER ===
+    burger.addEventListener('click', () => {
+      navMenu.classList.toggle('nav-active');
+      burger.classList.toggle('toggle');
+
+      document.body.style.overflow = navMenu.classList.contains('nav-active') ? 'hidden' : 'auto';
+    });
+
+    // === INTERSECTION ANIMATIONS ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.stat-card, .feature, .contact-item').forEach(el => {
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+
+    // === QUIZ NAV (без кастомных fetch, антибот теперь в widget.js) ===
+    let step = 1, total = 5;
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    const steps = $$(".step");
+    const pBar = $("#pBar");
+
+    const answers = {};
+    const hidden = {
+      debt: $("#quizDebt"),
+      delay: $("#quizDelay"),
+      job: $("#quizJob"),
+      property: $("#quizProperty")
+    };
+
+    function showStep(n) {
+      steps.forEach(s => s.style.display = "none");
+      steps[n-1].style.display = "block";
+      pBar.style.width = ((n-1)/(total-1))*100 + "%";
+      step = n;
+    }
+
+    $$(".btn-opt").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const name = btn.dataset.name, val = btn.dataset.value;
+
+        btn.parentElement.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        answers[name] = val;
+        if (hidden[name]) hidden[name].value = val;
+
+        if (step < total) showStep(++step);
+      });
+    });
+
+    // небольшой UI-хинт при отправке квиза (саму отправку/проверку делает widget.js)
+    const quizForm = document.getElementById("quizForm");
+    const autoHint = document.getElementById("autoHint");
+    const quizPhone = document.getElementById("quizPhone");
+    const quizName = document.getElementById("quizName");
+    const quizHoneypot = document.getElementById("quizHoneypot");
+
+    quizForm.addEventListener("submit", function() {
+      if (autoHint) autoHint.style.display = "block";
+
+      // базовая валидация (чтобы пустое не отправлялось даже в widget)
+      const name = quizName.value.trim();
+      const ph = quizPhone.value.replace(/[^0-9+]/g, '');
+      if (quizHoneypot.value) return;
+      if (!name || !(ph.startsWith('+7') && ph.length === 12)) return;
+    });
+
+    showStep(1);
+
+    // === UTM SAVE ===
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const utm = {
+        source: params.get("utm_source") || "",
+        campaign: params.get("utm_campaign") || "",
+        term: params.get("utm_term") || "",
+        geo: params.get("utm_geo") || params.get("utm_region") || ""
+      };
+      localStorage.setItem("UTM", JSON.stringify(utm));
+    })();
+  </script>
 
   <style>
     @keyframes pulse {
@@ -2001,112 +2230,5 @@ img{
       100% { transform: scale(1); box-shadow: 0 18px 45px rgba(0,0,0,.55); }
     }
   </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    
-      // =========================
-      //  MODAL: открыть/закрыть
-      // =========================
-      const modal = document.getElementById("modal");
-      const openBtns = document.querySelectorAll(".open-modal");
-      const closeBtn = document.querySelector(".close-modal");
-    
-      openBtns.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (!modal) return;
-          modal.style.display = "flex";
-        });
-      });
-    
-      if (closeBtn) {
-        closeBtn.addEventListener("click", () => {
-          if (!modal) return;
-          modal.style.display = "none";
-        });
-      }
-    
-      if (modal) {
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) modal.style.display = "none";
-        });
-      }
-    
-    
-      // =========================
-      //  QUIZ: шаги + прогресс
-      // =========================
-      const steps = Array.from(document.querySelectorAll(".step"));
-      const optBtns = Array.from(document.querySelectorAll(".btn-opt"));
-      const pBar = document.getElementById("pBar");
-    
-      const quizBody = document.getElementById("quizBody");
-      const thanksBox = document.getElementById("thanksBox");
-    
-      const quizName = document.getElementById("quizName");
-      const quizPhone = document.getElementById("quizPhone");
-    
-      let currentStep = 1;
-      const totalSteps = 5;
-      const answers = {};
-    
-      function setProgress(step) {
-        if (!pBar) return;
-        const pct = Math.round(((step - 1) / (totalSteps - 1)) * 100);
-        pBar.style.width = pct + "%";
-      }
-    
-      function showStep(step) {
-        steps.forEach(s => s.classList.remove("active"));
-        const active = document.querySelector(`.step[data-step="${step}"]`);
-        if (active) active.classList.add("active");
-        setProgress(step);
-      }
-    
-      function finishQuizIfReady() {
-        if (!quizName || !quizPhone) return;
-        const name = (quizName.value || "").trim();
-        const phone = (quizPhone.value || "").trim();
-        if (!name || !phone) return;
-    
-        // просто показываем "спасибо", НИКУДА НЕ ОТПРАВЛЯЕМ
-        if (quizBody) quizBody.style.display = "none";
-        if (thanksBox) thanksBox.style.display = "block";
-      }
-    
-      optBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const name = btn.dataset.name;
-          const value = btn.dataset.value;
-    
-          // подсветка выбранного в рамках шага
-          const stepEl = btn.closest(".step");
-          if (stepEl) {
-            stepEl.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
-          }
-          btn.classList.add("active");
-    
-          answers[name] = value;
-    
-          // следующий шаг
-          if (currentStep < totalSteps) {
-            currentStep += 1;
-            showStep(currentStep);
-          }
-        });
-      });
-    
-      if (quizPhone) quizPhone.addEventListener("blur", finishQuizIfReady);
-      if (quizPhone) quizPhone.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          finishQuizIfReady();
-        }
-      });
-    
-      // старт
-      showStep(1);
-    });
-    </script>    
 </body>
 </html>
