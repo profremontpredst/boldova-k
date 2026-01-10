@@ -1124,6 +1124,7 @@ img{
 }
   </style>
 </head>
+<body>
 
   <header class="header">
     <div class="container">
@@ -2000,5 +2001,112 @@ img{
       100% { transform: scale(1); box-shadow: 0 18px 45px rgba(0,0,0,.55); }
     }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    
+      // =========================
+      //  MODAL: открыть/закрыть
+      // =========================
+      const modal = document.getElementById("modal");
+      const openBtns = document.querySelectorAll(".open-modal");
+      const closeBtn = document.querySelector(".close-modal");
+    
+      openBtns.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (!modal) return;
+          modal.style.display = "flex";
+        });
+      });
+    
+      if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+          if (!modal) return;
+          modal.style.display = "none";
+        });
+      }
+    
+      if (modal) {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) modal.style.display = "none";
+        });
+      }
+    
+    
+      // =========================
+      //  QUIZ: шаги + прогресс
+      // =========================
+      const steps = Array.from(document.querySelectorAll(".step"));
+      const optBtns = Array.from(document.querySelectorAll(".btn-opt"));
+      const pBar = document.getElementById("pBar");
+    
+      const quizBody = document.getElementById("quizBody");
+      const thanksBox = document.getElementById("thanksBox");
+    
+      const quizName = document.getElementById("quizName");
+      const quizPhone = document.getElementById("quizPhone");
+    
+      let currentStep = 1;
+      const totalSteps = 5;
+      const answers = {};
+    
+      function setProgress(step) {
+        if (!pBar) return;
+        const pct = Math.round(((step - 1) / (totalSteps - 1)) * 100);
+        pBar.style.width = pct + "%";
+      }
+    
+      function showStep(step) {
+        steps.forEach(s => s.classList.remove("active"));
+        const active = document.querySelector(`.step[data-step="${step}"]`);
+        if (active) active.classList.add("active");
+        setProgress(step);
+      }
+    
+      function finishQuizIfReady() {
+        if (!quizName || !quizPhone) return;
+        const name = (quizName.value || "").trim();
+        const phone = (quizPhone.value || "").trim();
+        if (!name || !phone) return;
+    
+        // просто показываем "спасибо", НИКУДА НЕ ОТПРАВЛЯЕМ
+        if (quizBody) quizBody.style.display = "none";
+        if (thanksBox) thanksBox.style.display = "block";
+      }
+    
+      optBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const name = btn.dataset.name;
+          const value = btn.dataset.value;
+    
+          // подсветка выбранного в рамках шага
+          const stepEl = btn.closest(".step");
+          if (stepEl) {
+            stepEl.querySelectorAll(".btn-opt").forEach(b => b.classList.remove("active"));
+          }
+          btn.classList.add("active");
+    
+          answers[name] = value;
+    
+          // следующий шаг
+          if (currentStep < totalSteps) {
+            currentStep += 1;
+            showStep(currentStep);
+          }
+        });
+      });
+    
+      if (quizPhone) quizPhone.addEventListener("blur", finishQuizIfReady);
+      if (quizPhone) quizPhone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          finishQuizIfReady();
+        }
+      });
+    
+      // старт
+      showStep(1);
+    });
+    </script>    
 </body>
 </html>
