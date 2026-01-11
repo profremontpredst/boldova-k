@@ -1312,13 +1312,13 @@ img{
               <div class="lead">
                 <div class="field">
                   <label>Ваше имя</label>
-                  <input id="quizName" class="input" placeholder="Иван">
+                  <input id="quizName" name="name" class="input" placeholder="Иван">
                 </div>
                 <div class="field">
                   <label>Телефон</label>
-                  <input id="quizPhone" class="input" placeholder="+7 900 000-00-00">
+                  <input id="quizPhone" name="phone" class="input" placeholder="+7 900 000-00-00">
                 </div>
-                <input type="text" id="quizHoneypot" style="display: none !important;">
+                <input type="text" id="quizHoneypot" name="honeypot" style="display: none !important;">
                 <input type="hidden" name="debt" id="quizDebt">
                 <input type="hidden" name="delay" id="quizDelay">
                 <input type="hidden" name="job" id="quizJob">
@@ -1963,12 +1963,12 @@ img{
         <form id="contact-form" action="javascript:void(0)">
           <div class="form-group">
             <label for="name">Ваше имя</label>
-            <input type="text" id="name" placeholder="Иван" required>
+            <input type="text" id="name" name="name" placeholder="Иван" required>
           </div>
 
           <div class="form-group">
             <label for="phone">Телефон</label>
-            <input type="tel" id="phone" placeholder="+7 (900) 000-00-00" required>
+            <input type="tel" id="phone" name="phone" placeholder="+7 (900) 000-00-00" required>
           </div>
 
           <div class="form-group" style="margin-top: 20px; font-size: 12px; color: var(--muted); text-align: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
@@ -1978,7 +1978,7 @@ img{
             </span>
           </div>
 
-          <input type="text" id="honeypot" style="display:none !important;">
+          <input type="text" id="honeypot" name="honeypot" style="display:none !important;">
 
           <button type="submit" class="btn" style="width: 100%;" id="sendBtn">Отправить заявку</button>
 
@@ -2003,10 +2003,13 @@ img{
 
   <script src="https://unpkg.com/imask"></script>
   <script>
-    window.GIGABOT_SITE_ID = "site_boldova";
-    window.GIGABOT_PUBLIC_KEY = "pk_live_site_boldova_001";
+    window.GIGABOT_CONFIG = {
+      endpoint: "https://gigabot-db4r.onrender.com",
+      siteId: "site_boldova",
+      publicKey: "pk_live_site_boldova_001"
+    };
   </script>
-  <script src="https://gigabot-db4r.onrender.com/widget.js" async></script>
+  <script src="https://gigabot-admin-biea.onrender.com/gigabot.js"></script>  
   <script>
     const modal = document.getElementById('modal');
     const openModalButtons = document.querySelectorAll('.open-modal');
@@ -2056,20 +2059,38 @@ img{
     IMask(phone2, { mask: '+{7} (000) 000-00-00' });
 
     // === MODAL FORM SUBMIT (ТОЛЬКО UI, антибот теперь в widget.js) ===
-    document.getElementById("contact-form").addEventListener("submit", function() {
-      const name = document.getElementById("name").value.trim();
-      const phone = phoneInput.value.replace(/[^0-9+]/g, '');
-      const honeypot = document.getElementById("honeypot").value;
-      const status = document.getElementById("status");
+    document.getElementById("contact-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-      if (honeypot) return;
+  const name = document.getElementById("name").value.trim();
+  const phone = phoneInput.value.replace(/[^0-9+]/g, '');
+  const honeypot = document.getElementById("honeypot").value;
+  const status = document.getElementById("status");
+  const btn = document.getElementById("sendBtn");
 
-      if (!name || phone.length < 12) {
-        status.textContent = "Введите корректные данные";
-        return;
-      }
+  if (honeypot) return;
 
-      document.getElementById("sendBtn").disabled = true;
+  if (!name || !(phone.startsWith("+7") && phone.length === 12)) {
+    status.textContent = "Введите корректные данные";
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = "Проверяем…";
+
+  try {
+    if (!window.GigaBot || typeof window.GigaBot.send !== "function") {
+      throw new Error("GigaBot not loaded");
+    }
+
+    // 1) АНТИБОТ
+    const result = await window.GigaBot.send({
+      type: "form",
+      fields: { name, phone, honeypot }
+    });
+
+    // 2) DENY/BLOCK — делаем вид что всё ок (как в тестовой форме)
+    if (result.action !== "allow" && result.action !== "challenge") {
       document.getElementById("smart-form").style.display = "none";
       document.getElementById("receiving-screen").style.display = "block";
 
@@ -2082,8 +2103,48 @@ img{
           document.body.style.overflow = "auto";
           resetForm();
         }, 3000);
-      }, 2000);
+      }, 1200);
+
+      return;
+    }
+
+    // 3) ALLOW/CHALLENGE — ШЛЁМ ЛИД
+    const r = await fetch(window.GIGABOT_CONFIG.endpoint + "/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        siteId: window.GIGABOT_CONFIG.siteId,
+        publicKey: window.GIGABOT_CONFIG.publicKey,
+        userId: window.GigaBot._uid,
+        name,
+        phone,
+        utm: window.GigaBot._utm
+      })
     });
+
+    if (!r.ok) throw new Error("Lead request failed");
+
+    // 4) UI как у тебя было
+    document.getElementById("smart-form").style.display = "none";
+    document.getElementById("receiving-screen").style.display = "block";
+
+    setTimeout(() => {
+      document.getElementById("receiving-screen").style.display = "none";
+      document.getElementById("thanks-screen").style.display = "block";
+
+      setTimeout(() => {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+        resetForm();
+      }, 3000);
+    }, 1200);
+
+  } catch (err) {
+    console.error(err);
+    status.textContent = "Ошибка, попробуйте позже";
+    btn.disabled = false;
+  }
+});
 
     // === FAQ ===
     document.querySelectorAll('.faq-question').forEach(question => {
@@ -2203,15 +2264,75 @@ img{
     const quizName = document.getElementById("quizName");
     const quizHoneypot = document.getElementById("quizHoneypot");
 
-    quizForm.addEventListener("submit", function() {
-      if (autoHint) autoHint.style.display = "block";
+    quizForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-      // базовая валидация (чтобы пустое не отправлялось даже в widget)
-      const name = quizName.value.trim();
-      const ph = quizPhone.value.replace(/[^0-9+]/g, '');
-      if (quizHoneypot.value) return;
-      if (!name || !(ph.startsWith('+7') && ph.length === 12)) return;
+  if (autoHint) autoHint.style.display = "block";
+
+  const name = quizName.value.trim();
+  const phone = quizPhone.value.replace(/[^0-9+]/g, '');
+  const honeypot = quizHoneypot.value;
+
+  if (honeypot) return;
+
+  if (!name || !(phone.startsWith("+7") && phone.length === 12)) return;
+
+  try {
+    if (!window.GigaBot || typeof window.GigaBot.send !== "function") {
+      throw new Error("GigaBot not loaded");
+    }
+
+    // ответы берём из hidden (они у тебя уже заполняются при кликах)
+    const fields = {
+      name,
+      phone,
+      honeypot,
+      debt: hidden.debt.value || "",
+      delay: hidden.delay.value || "",
+      job: hidden.job.value || "",
+      property: hidden.property.value || ""
+    };
+
+    // 1) АНТИБОТ
+    const result = await window.GigaBot.send({
+      type: "quiz",
+      fields
     });
+
+    // 2) DENY/BLOCK — показываем "спасибо" и НЕ шлём лид (как “молча”)
+    if (result.action !== "allow" && result.action !== "challenge") {
+      steps.forEach(s => s.style.display = "none");
+      if (autoHint) autoHint.style.display = "none";
+      document.getElementById("thanksBox").style.display = "block";
+      return;
+    }
+
+    // 3) ALLOW/CHALLENGE — ЛИД
+    const r = await fetch(window.GIGABOT_CONFIG.endpoint + "/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        siteId: window.GIGABOT_CONFIG.siteId,
+        publicKey: window.GIGABOT_CONFIG.publicKey,
+        userId: window.GigaBot._uid,
+        name,
+        phone,
+        utm: window.GigaBot._utm
+      })
+    });
+
+    if (!r.ok) throw new Error("Lead request failed");
+
+    // UI “спасибо”
+    steps.forEach(s => s.style.display = "none");
+    if (autoHint) autoHint.style.display = "none";
+    document.getElementById("thanksBox").style.display = "block";
+
+  } catch (err) {
+    console.error(err);
+    if (autoHint) autoHint.textContent = "Ошибка, попробуйте позже";
+  }
+});
 
     showStep(1);
 
