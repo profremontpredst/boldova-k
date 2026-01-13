@@ -2108,22 +2108,6 @@ img{
       return;
     }
 
-    // 3) ALLOW/CHALLENGE — ШЛЁМ ЛИД
-    const r = await fetch(window.GIGABOT_CONFIG.endpoint + "/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        siteId: window.GIGABOT_CONFIG.siteId,
-        publicKey: window.GIGABOT_CONFIG.publicKey,
-        userId: window.GigaBot._uid,
-        name,
-        phone,
-        utm: window.GigaBot._utm
-      })
-    });
-
-    if (!r.ok) throw new Error("Lead request failed");
-
     // 4) UI как у тебя было
     document.getElementById("smart-form").style.display = "none";
     document.getElementById("receiving-screen").style.display = "block";
@@ -2306,22 +2290,6 @@ img{
       document.getElementById("thanksBox").style.display = "block";
       return;
     }
-
-    // 3) ALLOW/CHALLENGE — ЛИД
-    const r = await fetch(window.GIGABOT_CONFIG.endpoint + "/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        siteId: window.GIGABOT_CONFIG.siteId,
-        publicKey: window.GIGABOT_CONFIG.publicKey,
-        userId: window.GigaBot._uid,
-        name,
-        phone,
-        utm: window.GigaBot._utm
-      })
-    });
-
-    if (!r.ok) throw new Error("Lead request failed");
 
     // UI “спасибо”
     steps.forEach(s => s.style.display = "none");
