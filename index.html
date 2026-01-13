@@ -2059,7 +2059,10 @@ img{
     IMask(phone2, { mask: '+{7} (000) 000-00-00' });
 
     // === MODAL FORM SUBMIT (ТОЛЬКО UI, антибот теперь в widget.js) ===
+    window.__GB_LOCK = false;
     document.getElementById("contact-form").addEventListener("submit", async function (e) {
+  if (window.__GB_LOCK) return;
+  window.__GB_LOCK = true;
   e.preventDefault();
 
   const name = document.getElementById("name").value.trim();
@@ -2265,6 +2268,8 @@ img{
     const quizHoneypot = document.getElementById("quizHoneypot");
 
     quizForm.addEventListener("submit", async function (e) {
+  if (window.__GB_LOCK) return;
+  window.__GB_LOCK = true;
   e.preventDefault();
 
   if (autoHint) autoHint.style.display = "block";
