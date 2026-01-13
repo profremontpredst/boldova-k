@@ -2063,7 +2063,7 @@ img{
   e.preventDefault();
 
   const name = document.getElementById("name").value.trim();
-  const phone = phoneInput.value.replace(/[^0-9+]/g, '');
+  const phone = phoneInput?.value ? phoneInput.value.replace(/[^0-9+]/g, '') : '';
   const honeypot = document.getElementById("honeypot").value;
   const status = document.getElementById("status");
   const btn = document.getElementById("sendBtn");
@@ -2254,7 +2254,7 @@ img{
   if (autoHint) autoHint.style.display = "block";
 
   const name = quizName.value.trim();
-  const phone = quizPhone.value.replace(/[^0-9+]/g, '');
+  const phone = quizPhone?.value ? quizPhone.value.replace(/[^0-9+]/g, '') : '';
   const honeypot = quizHoneypot.value;
 
   if (honeypot) return;
