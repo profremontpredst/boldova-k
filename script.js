@@ -61,7 +61,7 @@ async function sendLeadToServer(data, type = 'form') {
       type: type,
       data: {
         name: data.name,
-        phone: data.phone,
+        phone: data.phone.replace(/[^0-9+]/g, ''),
         ...(type === 'quiz' ? {
           debt: data.debt,
           delay: data.delay,
