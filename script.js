@@ -50,6 +50,12 @@ if (phone2) {
   IMask(phone2, { mask: '+{7} (000) 000-00-00' });
 }
 
+// === ФУНКЦИЯ ОЧИСТКИ ТЕЛЕФОНА ===
+function cleanPhone(phone) {
+  // Убираем всё кроме цифр и знака +
+  return phone.replace(/[^0-9+]/g, '');
+}
+
 // === REAL SEND FUNCTION ===
 async function sendLeadToServer(data, type = 'form') {
   try {
@@ -98,7 +104,7 @@ document.getElementById("contact-form").addEventListener("submit", async functio
   e.preventDefault();
 
   const name = document.getElementById("name").value.trim();
-  const phone = phoneInput?.value ? phoneInput.value.replace(/[^0-9+]/g, '') : '';
+  const phone = phoneInput?.value ? cleanPhone(phoneInput.value) : '';
   const honeypot = document.getElementById("honeypot").value;
   const status = document.getElementById("status");
   const btn = document.getElementById("sendBtn");
@@ -114,18 +120,26 @@ document.getElementById("contact-form").addEventListener("submit", async functio
   status.textContent = "Проверяем…";
 
   try {
-    // 1) АНТИБОТ
+    // 1) АНТИБОТ (передаём ОЧИЩЕННЫЙ номер)
     if (window.GigaBot && typeof window.GigaBot.send === "function") {
       const result = await window.GigaBot.send({
         type: "form",
-        fields: { name, phone, honeypot }
+        fields: { 
+          name, 
+          phone: phone, // ЧИСТЫЙ номер: +79001234567
+          honeypot 
+        }
       });
 
-      if (result.action !== "allow" && result.action !== "challenge") {
+      // Логируем что вернул антибот
+      console.log('GigaBot result:', result);
+
+      if (result.action === "deny" || result.action === "block") {
         // Бот заблокировал - показываем UI, но не отправляем
         showModalSuccessUI();
         return;
       }
+      // Если CHALLENGE - тоже пропускаем, это нормально
     }
 
     // 2) ОТПРАВКА НА СЕРВЕР
@@ -287,7 +301,7 @@ quizForm.addEventListener("submit", async function (e) {
   if (autoHint) autoHint.style.display = "block";
 
   const name = quizName.value.trim();
-  const phone = quizPhone?.value ? quizPhone.value.replace(/[^0-9+]/g, '') : '';
+  const phone = quizPhone?.value ? cleanPhone(quizPhone.value) : '';
   const honeypot = quizHoneypot.value;
 
   if (honeypot) return;
@@ -298,12 +312,12 @@ quizForm.addEventListener("submit", async function (e) {
   }
 
   try {
-    // 1) АНТИБОТ
+    // 1) АНТИБОТ (передаём ОЧИЩЕННЫЙ номер)
     let botAllowed = true;
     if (window.GigaBot && typeof window.GigaBot.send === "function") {
       const fields = {
         name,
-        phone,
+        phone: phone, // ЧИСТЫЙ номер
         honeypot,
         debt: hidden.debt.value || "",
         delay: hidden.delay.value || "",
@@ -316,12 +330,14 @@ quizForm.addEventListener("submit", async function (e) {
         fields
       });
 
-      if (result.action !== "allow" && result.action !== "challenge") {
+      console.log('GigaBot quiz result:', result);
+
+      if (result.action === "deny" || result.action === "block") {
         botAllowed = false;
       }
     }
 
-    // 2) ОТПРАВКА НА СЕРВЕР (только если антибот разрешил)
+    // 2) ОТПРАВКА НА СЕРВЕР (если антибот не заблокировал)
     if (botAllowed) {
       const sendSuccess = await sendLeadToServer({
         name,
@@ -338,7 +354,7 @@ quizForm.addEventListener("submit", async function (e) {
       }
     }
 
-    // 3) UI УСПЕХА
+    // 3) UI УСПЕХА (показываем всегда, даже если CHALLENGE)
     steps.forEach(s => s.style.display = "none");
     if (autoHint) autoHint.style.display = "none";
     document.getElementById("thanksBox").style.display = "block";
