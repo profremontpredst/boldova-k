@@ -50,6 +50,49 @@ if (phone2) {
   IMask(phone2, { mask: '+{7} (000) 000-00-00' });
 }
 
+// === REAL SEND FUNCTION ===
+async function sendLeadToServer(data, type = 'form') {
+  try {
+    // Твой бэкенд для сохранения лидов
+    const endpoint = 'https://gigabot-db4r.onrender.com/api/lead';
+    
+    const payload = {
+      siteId: 'site_boldova',
+      type: type,
+      data: {
+        name: data.name,
+        phone: data.phone,
+        ...(type === 'quiz' ? {
+          debt: data.debt,
+          delay: data.delay,
+          job: data.job,
+          property: data.property
+        } : {}),
+        utm: JSON.parse(localStorage.getItem('UTM') || '{}'),
+        timestamp: new Date().toISOString(),
+        url: window.location.href
+      }
+    };
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      console.warn('Сервер не сохранил лид, но это не критично');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Ошибка отправки лида:', error);
+    return false;
+  }
+}
+
 // === MODAL FORM SUBMIT ===
 document.getElementById("contact-form").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -71,49 +114,31 @@ document.getElementById("contact-form").addEventListener("submit", async functio
   status.textContent = "Проверяем…";
 
   try {
-    if (!window.GigaBot || typeof window.GigaBot.send !== "function") {
-      throw new Error("GigaBot not loaded");
+    // 1) АНТИБОТ
+    if (window.GigaBot && typeof window.GigaBot.send === "function") {
+      const result = await window.GigaBot.send({
+        type: "form",
+        fields: { name, phone, honeypot }
+      });
+
+      if (result.action !== "allow" && result.action !== "challenge") {
+        // Бот заблокировал - показываем UI, но не отправляем
+        showModalSuccessUI();
+        return;
+      }
     }
 
-    // 1) АНТИБОТ
-    const result = await window.GigaBot.send({
-      type: "form",
-      fields: { name, phone, honeypot }
-    });
-
-    // 2) DENY/BLOCK — делаем вид что всё ок
-    if (result.action !== "allow" && result.action !== "challenge") {
-      document.getElementById("smart-form").style.display = "none";
-      document.getElementById("receiving-screen").style.display = "block";
-
-      setTimeout(() => {
-        document.getElementById("receiving-screen").style.display = "none";
-        document.getElementById("thanks-screen").style.display = "block";
-
-        setTimeout(() => {
-          modal.style.display = "none";
-          document.body.style.overflow = "auto";
-          resetForm();
-        }, 3000);
-      }, 1200);
-
+    // 2) ОТПРАВКА НА СЕРВЕР
+    const sendSuccess = await sendLeadToServer({ name, phone }, 'form');
+    
+    if (!sendSuccess) {
+      status.textContent = "Ошибка сети, попробуйте позже";
+      btn.disabled = false;
       return;
     }
 
-    // 4) UI как в оригинале
-    document.getElementById("smart-form").style.display = "none";
-    document.getElementById("receiving-screen").style.display = "block";
-
-    setTimeout(() => {
-      document.getElementById("receiving-screen").style.display = "none";
-      document.getElementById("thanks-screen").style.display = "block";
-
-      setTimeout(() => {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
-        resetForm();
-      }, 3000);
-    }, 1200);
+    // 3) UI УСПЕХА
+    showModalSuccessUI();
 
   } catch (err) {
     console.error(err);
@@ -121,6 +146,22 @@ document.getElementById("contact-form").addEventListener("submit", async functio
     btn.disabled = false;
   }
 });
+
+function showModalSuccessUI() {
+  document.getElementById("smart-form").style.display = "none";
+  document.getElementById("receiving-screen").style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("receiving-screen").style.display = "none";
+    document.getElementById("thanks-screen").style.display = "block";
+
+    setTimeout(() => {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+      resetForm();
+    }, 3000);
+  }, 1200);
+}
 
 // === FAQ ===
 document.querySelectorAll('.faq-question').forEach(question => {
@@ -159,15 +200,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 window.addEventListener('scroll', () => {
   const header = document.querySelector('.header');
   if (window.scrollY > 100) {
-    header.style.background = 'rgba(5,6,8,.78)';
+    header.style.background = 'rgba(255,255,255,.95)';
     header.style.backdropFilter = 'blur(14px)';
-    header.style.boxShadow = '0 12px 45px rgba(0,0,0,.55)';
-    header.style.borderBottom = '1px solid rgba(255,255,255,.08)';
+    header.style.boxShadow = '0 12px 45px rgba(0,0,0,.04)';
+    header.style.borderBottom = '1px solid rgba(0,0,0,.08)';
   } else {
-    header.style.background = 'rgba(5,6,8,.72)';
+    header.style.background = 'rgba(255,255,255,.92)';
     header.style.backdropFilter = 'blur(14px)';
-    header.style.boxShadow = '0 8px 40px rgba(0,0,0,.55)';
-    header.style.borderBottom = '1px solid rgba(255,255,255,.06)';
+    header.style.boxShadow = '0 8px 40px rgba(0,0,0,.03)';
+    header.style.borderBottom = '1px solid rgba(0,0,0,.05)';
   }
 });
 
@@ -251,39 +292,53 @@ quizForm.addEventListener("submit", async function (e) {
 
   if (honeypot) return;
 
-  if (!name || !(phone.startsWith("+7") && phone.length === 12)) return;
+  if (!name || !(phone.startsWith("+7") && phone.length === 12)) {
+    if (autoHint) autoHint.textContent = "Введите корректные данные";
+    return;
+  }
 
   try {
-    if (!window.GigaBot || typeof window.GigaBot.send !== "function") {
-      throw new Error("GigaBot not loaded");
-    }
-
-    // ответы берём из hidden
-    const fields = {
-      name,
-      phone,
-      honeypot,
-      debt: hidden.debt.value || "",
-      delay: hidden.delay.value || "",
-      job: hidden.job.value || "",
-      property: hidden.property.value || ""
-    };
-
     // 1) АНТИБОТ
-    const result = await window.GigaBot.send({
-      type: "quiz",
-      fields
-    });
+    let botAllowed = true;
+    if (window.GigaBot && typeof window.GigaBot.send === "function") {
+      const fields = {
+        name,
+        phone,
+        honeypot,
+        debt: hidden.debt.value || "",
+        delay: hidden.delay.value || "",
+        job: hidden.job.value || "",
+        property: hidden.property.value || ""
+      };
 
-    // 2) DENY/BLOCK — показываем "спасибо" и НЕ шлём лид
-    if (result.action !== "allow" && result.action !== "challenge") {
-      steps.forEach(s => s.style.display = "none");
-      if (autoHint) autoHint.style.display = "none";
-      document.getElementById("thanksBox").style.display = "block";
-      return;
+      const result = await window.GigaBot.send({
+        type: "quiz",
+        fields
+      });
+
+      if (result.action !== "allow" && result.action !== "challenge") {
+        botAllowed = false;
+      }
     }
 
-    // UI “спасибо”
+    // 2) ОТПРАВКА НА СЕРВЕР (только если антибот разрешил)
+    if (botAllowed) {
+      const sendSuccess = await sendLeadToServer({
+        name,
+        phone,
+        debt: hidden.debt.value || "",
+        delay: hidden.delay.value || "",
+        job: hidden.job.value || "",
+        property: hidden.property.value || ""
+      }, 'quiz');
+      
+      if (!sendSuccess) {
+        if (autoHint) autoHint.textContent = "Ошибка сети";
+        return;
+      }
+    }
+
+    // 3) UI УСПЕХА
     steps.forEach(s => s.style.display = "none");
     if (autoHint) autoHint.style.display = "none";
     document.getElementById("thanksBox").style.display = "block";
