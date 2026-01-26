@@ -363,3 +363,30 @@ showStep(1);
   };
   localStorage.setItem("UTM", JSON.stringify(utm));
 })();
+// === COOKIE CONSENT ===
+(function () {
+  const box = document.getElementById('cookie-consent');
+  if (!box) return;
+
+  const accept = document.getElementById('cookie-accept');
+  const decline = document.getElementById('cookie-decline');
+
+  // если уже был выбор — не показываем
+  if (localStorage.getItem('cookie_consent')) {
+    box.style.display = 'none';
+    return;
+  }
+
+  // показать баннер
+  box.style.display = 'flex';
+
+  accept.addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'accepted');
+    box.style.display = 'none';
+  });
+
+  decline.addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'declined');
+    box.style.display = 'none';
+  });
+})();
