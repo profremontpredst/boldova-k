@@ -618,38 +618,46 @@
     </div>
   </footer>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <button class="close-modal">&times;</button>
-      <h2>Получить консультацию</h2>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close-modal">&times;</button>
+    <h2>Получить консультацию</h2>
 
-      <div id="smart-form">
-        <form id="contact-form" action="javascript:void(0)">
-          <div class="form-group">
-            <label for="name">Ваше имя</label>
-            <input type="text" id="name" name="name" placeholder="Иван" required>
+    <div id="smart-form">
+      <form id="contact-form" action="javascript:void(0)">
+        <div class="form-group">
+          <label for="name">Ваше имя</label>
+          <input type="text" id="name" name="name" placeholder="Иван" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="tel" id="phone" name="phone" placeholder="+7 (900) 000-00-00" required>
+        </div>
+
+        <!-- Обновленный блок с чекбоксами -->
+        <div class="form-group consents">
+          <div class="consent-row">
+            <input class="consent-check" type="checkbox" name="consent_pd" required>
+            <span class="consent-text">Даю согласие на обработку моих персональных данных.</span>
           </div>
 
-          <div class="form-group">
-            <label for="phone">Телефон</label>
-            <input type="tel" id="phone" name="phone" placeholder="+7 (900) 000-00-00" required>
+          <div class="consent-row">
+            <input class="consent-check" type="checkbox" name="consent_policy" required>
+            <span class="consent-text">
+              Ознакомлен(а) и согласен(на) с
+              <a class="consent-link" href="/privacy-policy" target="_blank" rel="noopener">
+                Политикой конфиденциальности и обработки персональных данных
+              </a>.
+            </span>
           </div>
-
-          <div class="form-group consents">
-  <label class="consent-row">
-    <input class="consent-check" type="checkbox" name="consent_pd" required>
-    <span class="consent-text">Даю согласие на обработку моих персональных данных.</span>
-  </label>
-
-  <label class="consent-row">
-    <input class="consent-check" type="checkbox" name="consent_policy" required>
-    <span class="consent-text">
-      Ознакомлен(а) и согласен(на) с
-      <a class="consent-link" href="/privacy-policy" target="_blank" rel="noopener">
-        Политикой конфиденциальности и обработки персональных данных
-      </a>.
-    </span>
-  </label>
+        </div>
+        
+        <!-- Кнопка отправки -->
+        <button type="submit" id="sendBtn" class="btn">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
 </div>
 
           <input type="text" id="honeypot" name="honeypot" style="display:none !important;">
