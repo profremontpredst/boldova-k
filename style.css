@@ -1458,3 +1458,8 @@ a{color:inherit;text-decoration:none}
     width: 100%;
   }
 }
+/* Скрыть кнопку "Оставить заявку" внизу */
+footer .btn {
+  display: none !important;
+}
+
