@@ -709,6 +709,56 @@ a{color:inherit;text-decoration:none}
   border-color: rgba(180,83,9,.35);
   box-shadow: 0 0 0 4px rgba(180,83,9,.08);
 }
+.consents{
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.consent-row{
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  cursor: pointer;
+}
+
+.consent-row + .consent-row{
+  margin-top: 10px;
+}
+
+.consent-check{
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+}
+
+.consent-text{
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: rgba(163,170,183,.92);
+}
+
+.consent-link{
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.consent-link:hover{
+  text-decoration: underline;
+}
+
+@media (max-width: 480px){
+  .consent-text{
+    font-size: 11.5px;
+  }
+}
 
 .close-modal{
   position:absolute;
