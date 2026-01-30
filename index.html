@@ -635,25 +635,34 @@
           <input type="tel" id="phone" name="phone" placeholder="+7 (900) 000-00-00" required>
         </div>
 
-        <!-- Обновленный блок с чекбоксами -->
         <div class="form-group consents">
           <div class="consent-row">
             <input class="consent-check" type="checkbox" name="consent_pd" required>
-            <span class="consent-text">Даю согласие на обработку моих персональных данных.</span>
+            <span class="consent-text">
+              Даю согласие на
+              <a class="consent-link"
+                 href="https://boldova-k.ru/personal-data-policy"
+                 target="_blank"
+                 rel="noopener">
+                обработку моих персональных данных
+              </a>.
+            </span>
           </div>
 
           <div class="consent-row">
             <input class="consent-check" type="checkbox" name="consent_policy" required>
             <span class="consent-text">
               Ознакомлен(а) и согласен(на) с
-              <a class="consent-link" href="/privacy-policy" target="_blank" rel="noopener">
-                Политикой конфиденциальности и обработки персональных данных
+              <a class="consent-link"
+                 href="/privacy-policy"
+                 target="_blank"
+                 rel="noopener">
+                Политикой конфиденциальности
               </a>.
             </span>
           </div>
         </div>
-        
-        <!-- Кнопка отправки -->
+
         <button type="submit" id="sendBtn" class="btn">Отправить заявку</button>
       </form>
     </div>
