@@ -51,27 +51,39 @@ if (phone2) {
 }
 
 // === REAL SEND FUNCTION ===
+async function getSiteToken() {
+  const cfg = window.GIGABOT_CONFIG || {};
+  const adminEndpoint = cfg.adminEndpoint || "https://gigabot-admin-biea.onrender.com";
+  if (!cfg.siteId || !cfg.publicKey) {
+    throw new Error("GIGABOT_CONFIG missing");
+  }
+  const res = await fetch(adminEndpoint + "/api/sites/issue-token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      siteId: cfg.siteId,
+      publicKey: cfg.publicKey,
+      origin: window.location.origin
+    })
+  });
+  if (!res.ok) throw new Error("Token issue failed");
+  const data = await res.json();
+  if (!data.ok || !data.token) throw new Error("Invalid token response");
+  return data.token;
+}
+
 async function sendLeadToServer(data, type = 'form') {
   try {
     // Твой бэкенд для сохранения лидов
-    const endpoint = 'https://gigabot-db4r.onrender.com/api/lead';
+    const endpoint = 'https://gigabot-db4r.onrender.com/lead';
+    const siteToken = await getSiteToken();
     
     const payload = {
-      siteId: 'site_boldova',
-      type: type,
-      data: {
-        name: data.name,
-        phone: data.phone.replace(/[^0-9+]/g, ''),
-        ...(type === 'quiz' ? {
-          debt: data.debt,
-          delay: data.delay,
-          job: data.job,
-          property: data.property
-        } : {}),
-        utm: JSON.parse(localStorage.getItem('UTM') || '{}'),
-        timestamp: new Date().toISOString(),
-        url: window.location.href
-      }
+      siteToken,
+      userId: (window.GigaBot && window.GigaBot._uid) ? window.GigaBot._uid : "unknown",
+      name: data.name,
+      phone: data.phone.replace(/[^0-9+]/g, ''),
+      utm: JSON.parse(localStorage.getItem('UTM') || '{}')
     };
 
     const response = await fetch(endpoint, {
