@@ -136,6 +136,7 @@ document.getElementById("contact-form").addEventListener("submit", async functio
       if (result.action !== "allow" && result.action !== "challenge") {
         // Бот заблокировал - показываем UI, но не отправляем
         showModalSuccessUI();
+        btn.disabled = false;
         return;
       }
     }
@@ -151,6 +152,7 @@ document.getElementById("contact-form").addEventListener("submit", async functio
 
     // 3) UI УСПЕХА
     showModalSuccessUI();
+    btn.disabled = false;
 
   } catch (err) {
     console.error(err);
